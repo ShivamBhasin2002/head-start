@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@headout/eevee": "^4.0.3",
     "@headout/pixie": "^2.1.0",
     "class-variance-authority": "^0.7.1",
@@ -34,18 +33,9 @@
     "@pandacss/dev": "^0.54.0",
     "@tailwindcss/postcss": "^4",
     "@types/js-cookie": "^3.0.6",
-=======
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.4"
-  },
-  "devDependencies": {
-    "typescript": "^5",
->>>>>>> parent of 8e8c2ed (feat: added template structure fo the login and why us page)
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4"
   }
 }
