@@ -1,0 +1,56 @@
+export const mockCityPOIs = {
+  tokyo: [
+    {
+      id: "1",
+      name: "Tokyo Skytree",
+      category: "Attractions",
+      coordinates: { lat: 35.71006, lng: 139.8107 },
+      imageUrl: "/tokyo-skytree.jpg",
+      price: 40.84,
+      discountPercent: 5,
+      tgid: "xyz123",
+    },
+    {
+      id: "2",
+      name: "Sushi Dai",
+      category: "Restaurants",
+      coordinates: { lat: 35.6581, lng: 139.7516 },
+      imageUrl: "/sushi-dai.jpg",
+    },
+    {
+      id: "3",
+      name: "Cafe Kitsune",
+      category: "Restaurants",
+      coordinates: { lat: 35.6674, lng: 139.7159 },
+      imageUrl: "/cafe-kitsune.jpg",
+    },
+    {
+      id: "4",
+      name: "Tokyo Hands",
+      category: "Shopping",
+      coordinates: { lat: 35.6895, lng: 139.6917 },
+      imageUrl: "/tokyo-hands.jpg",
+    },
+    {
+      id: "5",
+      name: "Ueno Park",
+      category: "Nature & Parks",
+      coordinates: { lat: 35.714, lng: 139.774 },
+      imageUrl: "/ueno-park.jpg",
+    },
+    {
+      id: "6",
+      name: "Golden Gai",
+      category: "Nightlife",
+      coordinates: { lat: 35.6932, lng: 139.7047 },
+      imageUrl: "/golden-gai.jpg",
+    },
+    {
+      id: "7",
+      name: "Nezu Shrine",
+      category: "Hidden Gems",
+      coordinates: { lat: 35.72, lng: 139.761 },
+      imageUrl: "/nezu-shrine.jpg",
+    },
+  ],
+};
