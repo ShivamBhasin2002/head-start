@@ -7,7 +7,6 @@ import { MapPin, Backpack, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BackgroundDetailing } from "@/src/svgs/BackgroundDetailing";
 import { SignInSheet } from "@/src/components/SignInSheet";
-import { Button } from "@headout/eevee";
 
 export default function LoginPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -59,15 +58,12 @@ export default function LoginPage() {
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Button
-                variant="primary"
-                size="medium"
-                btnType="primary"
-                state="default"
-                as="button"
-                primaryText="Log in to get started"
+              <button
+                className="border border-white/20 rounded-full px-8 py-3 text-lg font-light bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
                 onClick={() => setIsSheetOpen(true)}
-              />
+              >
+                Log in to get started
+              </button>
             </motion.div>
           </div>
 

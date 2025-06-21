@@ -1,7 +1,6 @@
 "use client";
 
 import { Drawer } from "vaul";
-import { Button } from "@headout/eevee";
 import { ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -33,6 +32,9 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
 
   const otpInputStyles =
     "w-12 h-14 bg-white/10 rounded-lg text-white text-2xl text-center focus:outline-none focus:ring-2 focus:ring-white/50";
+
+  const buttonClasses =
+    "w-full bg-white text-black mt-8 rounded-lg py-4 text-lg font-semibold";
 
   return (
     <Drawer.Root shouldScaleBackground open={open} onOpenChange={onOpenChange}>
@@ -89,14 +91,12 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                         </div>
                       </div>
                     </div>
-                    <Button
-                      as="button"
-                      variant="secondary"
-                      size="large"
-                      primaryText="Proceed"
+                    <button
                       onClick={() => setStep("otp")}
-                      className="w-full !bg-white !text-black mt-8"
-                    />
+                      className={buttonClasses}
+                    >
+                      Proceed
+                    </button>
                   </motion.div>
                 ) : (
                   <motion.div
@@ -155,14 +155,9 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                         </button>
                       </div>
                     </div>
-                    <Button
-                      as="button"
-                      variant="secondary"
-                      size="large"
-                      primaryText="Confirm"
-                      className="w-full !bg-white !text-black mt-8"
-                      onClick={handleConfirm}
-                    />
+                    <button onClick={handleConfirm} className={buttonClasses}>
+                      Confirm
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
