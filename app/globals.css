@@ -24,3 +24,12 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.pressable {
+  cursor: pointer;
+}
+
+.pressable:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease-in-out;
+}

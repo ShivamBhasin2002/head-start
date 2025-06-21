@@ -4,7 +4,7 @@ import { Drawer } from "vaul";
 import { ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Cookies from "js-cookie";
+import { setCookie } from "nookies";
 import { useRouter } from "next/navigation";
 
 interface SignInSheetProps {
@@ -20,7 +20,14 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
 
   const handleConfirm = () => {
     // any random OTP is fine
-    Cookies.set("auth", JSON.stringify({ name, phone }), { expires: 7 }); // expires in 7 days
+    setCookie(null, "username", name, {
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+      path: "/",
+    });
+    setCookie(null, "number", phone, {
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+      path: "/",
+    });
     router.push("/");
   };
 
@@ -41,9 +48,185 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
         <Drawer.Content
-          className="bg-[#150029] flex flex-col rounded-t-3xl h-[434px] mt-24 fixed bottom-0 left-0 right-0 "
+          className="bg-[#150029] flex flex-col rounded-t-3xl h-[434px] mt-24 fixed bottom-0 left-0 right-0 overflow-hidden"
           style={drawerContent}
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="375"
+            height="442"
+            viewBox="0 0 375 442"
+            fill="none"
+            className="absolute top-[-90.5px] right-[-159px] -z-1"
+          >
+            <g filter="url(#filter0_f_79_14021)">
+              <circle
+                cx="173.5"
+                cy="220.5"
+                r="107.5"
+                fill="#5A007599"
+                fill-opacity="0.60"
+              ></circle>
+            </g>
+            <defs>
+              <filter
+                id="filter0_f_79_14021"
+                x="-48"
+                y="-1"
+                width="443"
+                height="443"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood
+                  flood-opacity="0"
+                  result="BackgroundImageFix"
+                ></feFlood>
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  result="shape"
+                ></feBlend>
+                <feGaussianBlur
+                  stdDeviation="57"
+                  result="effect1_foregroundBlur_79_14021"
+                ></feGaussianBlur>
+              </filter>
+            </defs>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="375"
+            height="442"
+            viewBox="0 0 375 442"
+            fill="none"
+            className="absolute bottom-[-113.5px] left-[-13px] -z-1"
+          >
+            <g filter="url(#filter0_f_79_14021)">
+              <circle
+                cx="173.5"
+                cy="220.5"
+                r="107.5"
+                fill="#5A007599"
+                fill-opacity="0.60"
+              ></circle>
+            </g>
+            <defs>
+              <filter
+                id="filter0_f_79_14021"
+                x="-48"
+                y="-1"
+                width="443"
+                height="443"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood
+                  flood-opacity="0"
+                  result="BackgroundImageFix"
+                ></feFlood>
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  result="shape"
+                ></feBlend>
+                <feGaussianBlur
+                  stdDeviation="57"
+                  result="effect1_foregroundBlur_79_14021"
+                ></feGaussianBlur>
+              </filter>
+            </defs>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="375"
+            height="442"
+            viewBox="0 0 375 442"
+            fill="none"
+            className="absolute left-[-151px] top-[32.5px] -z-1"
+          >
+            <g filter="url(#filter0_f_79_14021)">
+              <circle
+                cx="173.5"
+                cy="220.5"
+                r="107.5"
+                fill="#4788C1"
+                fill-opacity="0.21"
+              ></circle>
+            </g>
+            <defs>
+              <filter
+                id="filter0_f_79_14021"
+                x="-48"
+                y="-1"
+                width="443"
+                height="443"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood
+                  flood-opacity="0"
+                  result="BackgroundImageFix"
+                ></feFlood>
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  result="shape"
+                ></feBlend>
+                <feGaussianBlur
+                  stdDeviation="57"
+                  result="effect1_foregroundBlur_79_14021"
+                ></feGaussianBlur>
+              </filter>
+            </defs>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="375"
+            height="442"
+            viewBox="0 0 375 442"
+            fill="none"
+            className="absolute top-[-167.5px] left-[-10px] -z-1"
+          >
+            <g filter="url(#filter0_f_79_14021)">
+              <circle
+                cx="173.5"
+                cy="220.5"
+                r="107.5"
+                fill="#4788C1"
+                fill-opacity="0.21"
+              ></circle>
+            </g>
+            <defs>
+              <filter
+                id="filter0_f_79_14021"
+                x="-48"
+                y="-1"
+                width="443"
+                height="443"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood
+                  flood-opacity="0"
+                  result="BackgroundImageFix"
+                ></feFlood>
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  result="shape"
+                ></feBlend>
+                <feGaussianBlur
+                  stdDeviation="57"
+                  result="effect1_foregroundBlur_79_14021"
+                ></feGaussianBlur>
+              </filter>
+            </defs>
+          </svg>
           <div className="p-4 rounded-t-2xl flex-1 h-full">
             <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-[#150029] mb-8" />
             <div className="max-w-md mx-auto">
@@ -104,15 +287,19 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                           maxLength={1}
                           onInput={(e) => {
                             const input = e.target as HTMLInputElement;
-                            input.value = input.value.replace(/[^0-9]/g, '');
+                            input.value = input.value.replace(/[^0-9]/g, "");
                             if (input.value.length === 1) {
-                              (input.nextElementSibling as HTMLInputElement)?.focus();
+                              (
+                                input.nextElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                           onKeyDown={(e) => {
                             const input = e.target as HTMLInputElement;
-                            if (e.key === 'Backspace' && input.value === '') {
-                              (input.previousElementSibling as HTMLInputElement)?.focus();
+                            if (e.key === "Backspace" && input.value === "") {
+                              (
+                                input.previousElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                         />
@@ -124,15 +311,19 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                           maxLength={1}
                           onInput={(e) => {
                             const input = e.target as HTMLInputElement;
-                            input.value = input.value.replace(/[^0-9]/g, '');
+                            input.value = input.value.replace(/[^0-9]/g, "");
                             if (input.value.length === 1) {
-                              (input.nextElementSibling as HTMLInputElement)?.focus();
+                              (
+                                input.nextElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                           onKeyDown={(e) => {
                             const input = e.target as HTMLInputElement;
-                            if (e.key === 'Backspace' && input.value === '') {
-                              (input.previousElementSibling as HTMLInputElement)?.focus();
+                            if (e.key === "Backspace" && input.value === "") {
+                              (
+                                input.previousElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                         />
@@ -144,15 +335,19 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                           maxLength={1}
                           onInput={(e) => {
                             const input = e.target as HTMLInputElement;
-                            input.value = input.value.replace(/[^0-9]/g, '');
+                            input.value = input.value.replace(/[^0-9]/g, "");
                             if (input.value.length === 1) {
-                              (input.nextElementSibling as HTMLInputElement)?.focus();
+                              (
+                                input.nextElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                           onKeyDown={(e) => {
                             const input = e.target as HTMLInputElement;
-                            if (e.key === 'Backspace' && input.value === '') {
-                              (input.previousElementSibling as HTMLInputElement)?.focus();
+                            if (e.key === "Backspace" && input.value === "") {
+                              (
+                                input.previousElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                         />
@@ -164,15 +359,19 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                           maxLength={1}
                           onInput={(e) => {
                             const input = e.target as HTMLInputElement;
-                            input.value = input.value.replace(/[^0-9]/g, '');
+                            input.value = input.value.replace(/[^0-9]/g, "");
                             if (input.value.length === 1) {
-                              (input.nextElementSibling as HTMLInputElement)?.focus();
+                              (
+                                input.nextElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                           onKeyDown={(e) => {
                             const input = e.target as HTMLInputElement;
-                            if (e.key === 'Backspace' && input.value === '') {
-                              (input.previousElementSibling as HTMLInputElement)?.focus();
+                            if (e.key === "Backspace" && input.value === "") {
+                              (
+                                input.previousElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                         />
@@ -184,15 +383,19 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                           maxLength={1}
                           onInput={(e) => {
                             const input = e.target as HTMLInputElement;
-                            input.value = input.value.replace(/[^0-9]/g, '');
+                            input.value = input.value.replace(/[^0-9]/g, "");
                             if (input.value.length === 1) {
-                              (input.nextElementSibling as HTMLInputElement)?.focus();
+                              (
+                                input.nextElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                           onKeyDown={(e) => {
                             const input = e.target as HTMLInputElement;
-                            if (e.key === 'Backspace' && input.value === '') {
-                              (input.previousElementSibling as HTMLInputElement)?.focus();
+                            if (e.key === "Backspace" && input.value === "") {
+                              (
+                                input.previousElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                         />
@@ -204,15 +407,19 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                           maxLength={1}
                           onInput={(e) => {
                             const input = e.target as HTMLInputElement;
-                            input.value = input.value.replace(/[^0-9]/g, '');
+                            input.value = input.value.replace(/[^0-9]/g, "");
                             if (input.value.length === 1) {
-                              (input.nextElementSibling as HTMLInputElement)?.focus();
+                              (
+                                input.nextElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                           onKeyDown={(e) => {
                             const input = e.target as HTMLInputElement;
-                            if (e.key === 'Backspace' && input.value === '') {
-                              (input.previousElementSibling as HTMLInputElement)?.focus();
+                            if (e.key === "Backspace" && input.value === "") {
+                              (
+                                input.previousElementSibling as HTMLInputElement
+                              )?.focus();
                             }
                           }}
                         />

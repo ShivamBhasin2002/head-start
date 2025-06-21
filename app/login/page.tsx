@@ -3,10 +3,31 @@
 import { motion, Variants } from "framer-motion";
 import { Logo } from "@/src/svgs/Logo";
 import { Arrow } from "@/src/svgs/Arrow";
-import { MapPin, Backpack, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BackgroundDetailing } from "@/src/svgs/BackgroundDetailing";
 import { SignInSheet } from "@/src/components/SignInSheet";
+
+export const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+export const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+    },
+  },
+};
 
 export default function LoginPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -15,28 +36,6 @@ export default function LoginPage() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-      },
-    },
-  };
 
   if (!isMounted) {
     return null;
