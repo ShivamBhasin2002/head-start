@@ -26,7 +26,7 @@ export function CityCard({
     setImageError(true);
   };
 
-  const finalImageUrl = imageError ? '/tokyo-skytree.jpg' : imageUrl;
+  const finalImageUrl = imageError ? "/tokyo-skytree.jpg" : imageUrl;
 
   return (
     <div
@@ -54,10 +54,10 @@ export function CityCard({
         </div>
       </div>
       {/* Hidden image element to detect loading errors */}
-      <img 
-        src={imageUrl} 
-        alt="" 
-        style={{ display: 'none' }} 
+      <img
+        src={imageUrl}
+        alt=""
+        style={{ display: "none" }}
         onError={handleImageError}
       />
     </div>
