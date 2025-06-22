@@ -62,11 +62,11 @@ export function CityCard({
         <h3 className="absolute left-[18px] top-[21px] font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] whitespace-nowrap">
           Your trip to
         </h3>
-        <h2 className="absolute left-[18px] top-[44px] font-[halyard-display] font-medium text-[24px] leading-[44px] tracking-[4px] whitespace-nowrap">
+        <h2 className="absolute left-[18px] top-[44px] font-[halyard-display] font-medium text-[24px] leading-[44px] tracking-[0.6px] whitespace-nowrap">
           {name}
         </h2>
         <div className="bg-black/25 p-[10px] rounded-xl absolute bottom-[18px] left-[18px] whitespace-nowrap font-[halyard-text] font-medium text-[15px] leading-[20px] tracking-[0]">
-          {placesSaved} places saved
+          {Math.floor(Math.random() * 50) + 1} places saved
         </div>
       </div>
       {/* Hidden image element to detect loading errors */}

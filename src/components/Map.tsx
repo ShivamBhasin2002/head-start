@@ -92,6 +92,31 @@ function MapBounds({ pois }: { pois: POI[] }) {
   return null;
 }
 
+function ZoomHandler() {
+  const map = useMap();
+
+  useEffect(() => {
+    const setZoomClass = () => {
+      const zoom = map.getZoom();
+      const container = map.getContainer();
+      // Remove any existing zoom-level-* classes
+      for (let i = 0; i <= 20; i++) {
+        container.classList.remove(`zoom-level-${i}`);
+      }
+      container.classList.add(`zoom-level-${zoom}`);
+    };
+
+    map.on("zoomend", setZoomClass);
+    setZoomClass(); // Set on initial render
+
+    return () => {
+      map.off("zoomend", setZoomClass);
+    };
+  }, [map]);
+
+  return null;
+}
+
 export function Map({ pois, selectedPOI, onMarkerClick }: MapProps) {
   if (typeof window === "undefined") {
     return null;
@@ -134,6 +159,16 @@ export function Map({ pois, selectedPOI, onMarkerClick }: MapProps) {
             border-radius: 10px;
             white-space: nowrap;
           }
+          .zoom-level-10 .custom-marker-container { transform: scale(0.6); }
+          .zoom-level-11 .custom-marker-container { transform: scale(0.7); }
+          .zoom-level-12 .custom-marker-container { transform: scale(0.8); }
+          .zoom-level-13 .custom-marker-container { transform: scale(1.0); }
+          .zoom-level-14 .custom-marker-container { transform: scale(1.1); }
+          .zoom-level-15 .custom-marker-container { transform: scale(1.2); }
+          .zoom-level-12 .custom-marker-label { display: none; }
+          .zoom-level-11 .custom-marker-label { display: none; }
+          .zoom-level-10 .custom-marker-label { display: none; }
+          .zoom-level-9 .custom-marker-label { display: none; }
           .custom-marker-container.selected {
             transform: scale(1.2);
             z-index: 1000;
@@ -164,6 +199,7 @@ export function Map({ pois, selectedPOI, onMarkerClick }: MapProps) {
           />
         ))}
         <MapBounds pois={pois} />
+        <ZoomHandler />
       </MapContainer>
     </>
   );

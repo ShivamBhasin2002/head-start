@@ -95,13 +95,9 @@ export default function HomePage() {
   if (isNewUser === null) {
     return (
       <div className="text-center py-12 text-white/60 relative h-screen">
-        <video
-          src="/loader.mp4"
-          height="100vh"
-          controls={false}
-          autoPlay={true}
-          className="height-[100vh] absolute bottom-0"
-        />
+        <div className="flex justify-center items-center h-screen">
+          <div className="w-16 h-16 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+        </div>
       </div>
     );
   }
