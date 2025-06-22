@@ -20,13 +20,13 @@ export function CityCard({ id, name, imageUrl, placesSaved }: CityCardProps) {
       onClick={() => router.push(`/city/${id}`)}
     >
       <div className="relative z-10">
-        <h3 className="absolute left-[18px] top-[21px] font-[Halyard Text] font-semibold text-[18px] leading-[24px] tracking-[0] whitespace-nowrap">
+        <h3 className="absolute left-[18px] top-[21px] font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] whitespace-nowrap">
           Your trip to
         </h3>
-        <h2 className="absolute left-[18px] top-[44px] font-[Halyard Display] font-medium text-[24px] leading-[44px] tracking-[4px] whitespace-nowrap">
+        <h2 className="absolute left-[18px] top-[44px] font-[halyard-display] font-medium text-[24px] leading-[44px] tracking-[4px] whitespace-nowrap">
           {name}
         </h2>
-        <div className="bg-black/25 p-[10px] rounded-xl absolute bottom-[18px] left-[18px] whitespace-nowrap font-[Halyard Text] font-medium text-[15px] leading-[20px] tracking-[0]">
+        <div className="bg-black/25 p-[10px] rounded-xl absolute bottom-[18px] left-[18px] whitespace-nowrap font-[halyard-text] font-medium text-[15px] leading-[20px] tracking-[0]">
           {placesSaved} places saved
         </div>
       </div>

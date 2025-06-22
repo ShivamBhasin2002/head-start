@@ -29,20 +29,25 @@ export function FilterChips({ onFilterChange }: FilterChipsProps) {
   };
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
-      {categories.map((category) => (
-        <button
-          key={category}
-          onClick={() => toggleCategory(category)}
-          className={`px-4 py-2 text-sm rounded-full whitespace-nowrap transition-colors ${
-            selected.includes(category)
-              ? "bg-white text-black font-semibold"
-              : "bg-white/10 text-white"
-          }`}
-        >
-          {category}
-        </button>
-      ))}
+    <div className="-mx-4 min-h-[32px] px-4 relative after:content-[''] after:absolute after:top-[32px] after:left-0 after:right-0 after:h-6 after:bg-gradient-to-b after:from-[#150029] after:to-transparent">
+      <div
+        className="flex gap-2 overflow-x-auto"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => toggleCategory(category)}
+            className={`p-2 pt-1.5 rounded-full whitespace-nowrap transition-colors pressable font-[halyard-text] font-medium text-[14px] leading-[16px] tracking-[0] ${
+              selected.includes(category)
+                ? "bg-white text-black"
+                : "bg-white/10 text-white"
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

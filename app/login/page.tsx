@@ -8,8 +8,6 @@ import { BackgroundDetailing } from "@/src/svgs/BackgroundDetailing";
 import { SignInSheet } from "@/src/components/SignInSheet";
 import { containerVariants, itemVariants } from "@/lib/mockCityData";
 
-
-
 export default function LoginPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -116,7 +114,7 @@ export default function LoginPage() {
 
             <motion.div variants={itemVariants}>
               <button
-                className="border-2 border-[#E168FF30] rounded-[100px] px-4 py-3 bg-[rgba(0,0,0,0.60)] backdrop-blur-sm hover:bg-white/20 transition-transform transform active:scale-98 text-[#FFF] font-[Halyard Text] text-[16px] font-[500] leading-[20px] tracking-[0px] whitespace-nowrap"
+                className="border-2 border-[#E168FF30] rounded-[100px] px-4 py-3 bg-[rgba(0,0,0,0.60)] backdrop-blur-sm hover:bg-white/20 transition-transform transform active:scale-98 text-[#FFF] font-[halyard-text] text-[16px] font-[500] leading-[20px] tracking-[0px] whitespace-nowrap"
                 onClick={() => setIsSheetOpen(true)}
               >
                 Sign up to get started
@@ -131,10 +129,10 @@ export default function LoginPage() {
             variants={itemVariants}
           >
             <div className="flex flex-col items-center text-center">
-              <p className="text-lg text-white/80 mb-1 font-[Halyard Text] font-semibold text-[21px] leading-[28px] tracking-[0]">
+              <p className="text-lg text-white/80 mb-1 font-[halyard-text] font-semibold text-[21px] leading-[28px] tracking-[0]">
                 So...
               </p>
-              <p className="text-2xl font-medium text-white font-[Halyard Text] font-semibold text-[21px] leading-[28px] tracking-[0]">
+              <p className="text-2xl font-medium text-white font-[halyard-text] font-semibold text-[21px] leading-[28px] tracking-[0]">
                 Why Us?
               </p>
             </div>

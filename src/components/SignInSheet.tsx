@@ -41,7 +41,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
     "w-12 h-14 bg-white/10 rounded-lg text-white text-2xl text-center focus:outline-none focus:ring-2 focus:ring-white/50";
 
   const buttonClasses =
-    " bg-white text-black mt-8 rounded-lg py-4 font-[Halyard Text] font-medium text-[16px] leading-[20px] tracking-[0] absolute bottom-[34px] left-[16px] right-[16px]";
+    " bg-white text-black mt-8 rounded-lg py-4 font-[halyard-text] font-medium text-[16px] leading-[20px] tracking-[0] absolute bottom-[34px] left-[16px] right-[16px]";
 
   return (
     <Drawer.Root shouldScaleBackground open={open} onOpenChange={onOpenChange}>
@@ -244,21 +244,21 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                     className="flex flex-col justify-between h-full"
                   >
                     <div>
-                      <h2 className="font-[Halyard Text] font-semibold text-[24px] leading-[28px] tracking-[0] text-white mb-8">
+                      <h2 className="font-[halyard-text] font-semibold text-[24px] leading-[28px] tracking-[0] text-white mb-8">
                         Sign in
                       </h2>
                       <div className="space-y-4">
                         <input
                           type="text"
                           placeholder="Your name"
-                          className="w-full px-3 py-[18px] bg-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none font-[Halyard Text] font-light text-[15px] leading-[20px] tracking-[0%]"
+                          className="w-full px-3 py-[18px] bg-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none font-[halyard-text] font-light text-[15px] leading-[20px] tracking-[0%]"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                         />
                         <input
                           type="tel"
                           placeholder="Your phone number"
-                          className="w-full px-3 py-[18px] bg-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none font-[Halyard Text] font-light text-[15px] leading-[20px] tracking-[0%]"
+                          className="w-full px-3 py-[18px] bg-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none font-[halyard-text] font-light text-[15px] leading-[20px] tracking-[0%]"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                         />

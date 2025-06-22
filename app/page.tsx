@@ -276,7 +276,7 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <button className="border-2 border-[#ffffff10] rounded-[10px] px-4 py-3 bg-[#ffffff20] backdrop-blur-sm hover:bg-white/20 transition-transform transform active:scale-98 text-[#FFF] font-[Halyard Text] font-[500] text-[15px] leading-[20px] tracking-[0] whitespace-nowrap flex gap-1.5 items-center justify-center px-2 py-1.5 mb-[40px]">
+            <button className="border-2 border-[#ffffff10] rounded-[10px] px-4 py-3 bg-[#ffffff20] backdrop-blur-sm hover:bg-white/20 transition-transform transform active:scale-98 text-[#FFF] font-[halyard-text] font-[500] text-[15px] leading-[20px] tracking-[0] whitespace-nowrap flex gap-1.5 items-center justify-center px-2 py-1.5 mb-[40px]">
               <svg
                 width="24"
                 height="25"
@@ -333,7 +333,7 @@ export default function HomePage() {
 
       {!isNewUser && <CityCardCarousel />}
 
-      <div className="font-[Halyard Text] font-semibold text-[18px] leading-[24px] tracking-[0] text-center">
+      <div className="font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] text-center">
         Have an inspiration?
       </div>
 
@@ -375,7 +375,7 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="absolute bottom-0 left-0 right-0 bg-green-900 text-black p-4 flex justify-between items-center z-2"
             style={{
-              fontFamily: "Halyard Text",
+              fontFamily: "halyard-text",
               fontWeight: 300,
               fontSize: "14px",
               lineHeight: "16px",
@@ -428,7 +428,7 @@ export default function HomePage() {
         <input
           type="text"
           placeholder="Share your link with us"
-          className="w-full bg-white/5 border-2 border-white/10 rounded-2xl p-4 py-5 font-[Halyard Text] font-light text-[14px] leading-[16px] tracking-[0] focus:outline-none "
+          className="w-full bg-white/5 border-2 border-white/10 rounded-2xl p-4 py-5 font-[halyard-text] font-light text-[14px] leading-[16px] tracking-[0] focus:outline-none "
           name="message"
         />
         <button
@@ -487,13 +487,13 @@ export default function HomePage() {
       {isNewUser && (
         <>
           <div className="flex items-center gap-4 my-4">
-            <span className="font-[Halyard Text] font-semibold text-[15px] leading-[20px] tracking-[0] text-white/30 text-center mx-auto">
+            <span className="font-[halyard-text] font-semibold text-[15px] leading-[20px] tracking-[0] text-white/30 text-center mx-auto">
               OR
             </span>
           </div>
 
           <div className="bg-[#51F07E17] rounded-2xl p-4 pressable">
-            <h3 className="font-[Halyard Text] font-semibold text-[18px] leading-[24px] tracking-[0] text-center flex gap-2 justify-center">
+            <h3 className="font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] text-center flex gap-2 justify-center">
               Simply use our WhatsApp bot
               <svg
                 width="25"
@@ -540,7 +540,7 @@ export default function HomePage() {
                 </defs>
               </svg>
             </h3>
-            <p className="font-[Halyard Text] font-light text-[14px] leading-[20px] tracking-[0] text-center text-white/60 mt-1">
+            <p className="font-[halyard-text] font-light text-[14px] leading-[20px] tracking-[0] text-center text-white/60 mt-1">
               Found an amazing instagram reel or a brag worthy blog? Simply
               share the link with our bot and we'll do all the work for you!
             </p>
@@ -651,10 +651,10 @@ export default function HomePage() {
       {isNewUser && (
         <>
           <div className="mt-[52px] mb-[32px]">
-            <h2 className="font-[Halyard Text] font-[600] text-[18px] leading-[24px] tracking-[0] flex items-center gap-2">
+            <h2 className="font-[halyard-text] font-[600] text-[18px] leading-[24px] tracking-[0] flex items-center gap-2">
               Get inspiration for{" "}
               <button
-                className="flex items-center gap-1 text-[#DFBFFF] underline underline-offset-3 font-[Halyard Text] font-[600] text-[18px] leading-[24px] tracking-[0]"
+                className="flex items-center gap-1 text-[#DFBFFF] underline underline-offset-3 font-[halyard-text] font-[600] text-[18px] leading-[24px] tracking-[0]"
                 onClick={() => setIsSearchSheetOpen(true)}
               >
                 {selectedTrip} trips <ChevronDown size={18} />
