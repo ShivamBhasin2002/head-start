@@ -3,7 +3,7 @@
 import { motion, Variants } from "framer-motion";
 import { Logo } from "@/src/svgs/Logo";
 import { Arrow } from "@/src/svgs/Arrow";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BackgroundDetailing } from "@/src/svgs/BackgroundDetailing";
 import { SignInSheet } from "@/src/components/SignInSheet";
 
@@ -30,16 +30,7 @@ export const itemVariants: Variants = {
 };
 
 export default function LoginPage() {
-  const [isMounted, setIsMounted] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <>

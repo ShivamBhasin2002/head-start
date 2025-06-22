@@ -15,15 +15,18 @@ export function CityCard({ id, name, imageUrl, placesSaved }: CityCardProps) {
 
   return (
     <div
-      className="min-w-[200px] h-[280px] rounded-2xl bg-cover bg-center p-4 flex flex-col justify-end text-white relative cursor-pointer group"
+      className="w-[231px] h-[319px] rounded-3xl bg-cover bg-center flex pressable shadow-[0px_4px_33px_0px_#C852FF40] border-[5px] border-[#FFFFFF10] bg-gradient-to-br from-transparent to-black/70 relative"
       style={{ backgroundImage: `url(${imageUrl})` }}
       onClick={() => router.push(`/city/${id}`)}
     >
-      <div className="absolute inset-0 bg-black/30 rounded-2xl group-hover:bg-black/50 transition-colors"></div>
       <div className="relative z-10">
-        <h3 className="text-xl font-bold">Your trip to</h3>
-        <h2 className="text-4xl font-bold">{name}</h2>
-        <div className="mt-4 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm self-start">
+        <h3 className="absolute left-[18px] top-[21px] font-[Halyard Text] font-semibold text-[18px] leading-[24px] tracking-[0] whitespace-nowrap">
+          Your trip to
+        </h3>
+        <h2 className="absolute left-[18px] top-[44px] font-[Halyard Display] font-medium text-[24px] leading-[44px] tracking-[4px] whitespace-nowrap">
+          {name}
+        </h2>
+        <div className="bg-black/25 p-[10px] rounded-xl absolute bottom-[18px] left-[18px] whitespace-nowrap font-[Halyard Text] font-medium text-[15px] leading-[20px] tracking-[0]">
           {placesSaved} places saved
         </div>
       </div>
