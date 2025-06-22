@@ -38,6 +38,13 @@ export default function CityPage() {
 
   const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
 
+  const handleRemovePOI = (poiId: string) => {
+    setPois((currentPois) => currentPois.filter((p) => p.id !== poiId));
+    if (selectedPOI?.id === poiId) {
+      deselectPOI();
+    }
+  };
+
   const deselectPOI = (resize?: boolean) => {
     setSelectedPOI(null);
     if (resize) setYState(snapPoints[1]);
@@ -297,7 +304,7 @@ export default function CityPage() {
                     setSelectedPOI(poi);
                     setY(snapPoints[2]);
                   }}
-                  onRemove={() => {}}
+                  onRemove={() => handleRemovePOI(poi.id)}
                   onViewSources={() => {
                     setSelectedPOI(poi);
                   }}
@@ -311,7 +318,7 @@ export default function CityPage() {
         <div className="fixed inset-x-0 bottom-[156px] px-4 rounded-t-3xl">
           <POICard
             poi={selectedPOI}
-            onRemove={() => {}}
+            onRemove={() => handleRemovePOI(selectedPOI.id)}
             onViewSources={() => {}}
             isLight
           />
