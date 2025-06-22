@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SearchSheet } from "@/src/components/SearchSheet";
-import { containerVariants, itemVariants } from "./login/page";
+import { containerVariants, itemVariants } from "@/lib/mockCityData";
 import { parseCookies } from "nookies";
 import { CityCardCarousel } from "@/src/components/CityCardCarousel";
 
