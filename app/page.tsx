@@ -648,42 +648,46 @@ export default function HomePage() {
         </svg>
       )}
 
-      <div className="mt-[52px] mb-[32px]">
-        <h2 className="font-[Halyard Text] font-[600] text-[18px] leading-[24px] tracking-[0] flex items-center gap-2">
-          Get inspiration for{" "}
-          <button
-            className="flex items-center gap-1 text-[#DFBFFF] underline underline-offset-3 font-[Halyard Text] font-[600] text-[18px] leading-[24px] tracking-[0]"
-            onClick={() => setIsSearchSheetOpen(true)}
-          >
-            {selectedTrip} trips <ChevronDown size={18} />
-          </button>
-        </h2>
-      </div>
-
-      <div className="flex gap-4 overflow-x-auto mt-4 pb-4">
-        {tripInspirations[selectedTrip].map((trip, i) => (
-          <div key={i} className="min-w-[180px]">
-            <Image
-              src={trip.image}
-              alt={trip.city}
-              width={180}
-              height={220}
-              className="rounded-lg object-cover"
-            />
-            <div className="mt-2">
-              <div className="flex items-center gap-2 text-xs">
-                <div className="w-5 h-5 rounded-full bg-white/20"></div>
-                <span>{trip.user}</span>
-              </div>
-              <p className="text-sm mt-1">{trip.plan}</p>
-            </div>
+      {isNewUser && (
+        <>
+          <div className="mt-[52px] mb-[32px]">
+            <h2 className="font-[Halyard Text] font-[600] text-[18px] leading-[24px] tracking-[0] flex items-center gap-2">
+              Get inspiration for{" "}
+              <button
+                className="flex items-center gap-1 text-[#DFBFFF] underline underline-offset-3 font-[Halyard Text] font-[600] text-[18px] leading-[24px] tracking-[0]"
+                onClick={() => setIsSearchSheetOpen(true)}
+              >
+                {selectedTrip} trips <ChevronDown size={18} />
+              </button>
+            </h2>
           </div>
-        ))}
-      </div>
-      <SearchSheet
-        open={isSearchSheetOpen}
-        onOpenChange={setIsSearchSheetOpen}
-      />
+
+          <div className="flex gap-4 overflow-x-auto mt-4 pb-4">
+            {tripInspirations[selectedTrip].map((trip, i) => (
+              <div key={i} className="min-w-[180px]">
+                <Image
+                  src={trip.image}
+                  alt={trip.city}
+                  width={180}
+                  height={220}
+                  className="rounded-lg object-cover"
+                />
+                <div className="mt-2">
+                  <div className="flex items-center gap-2 text-xs">
+                    <div className="w-5 h-5 rounded-full bg-white/20"></div>
+                    <span>{trip.user}</span>
+                  </div>
+                  <p className="text-sm mt-1">{trip.plan}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <SearchSheet
+            open={isSearchSheetOpen}
+            onOpenChange={setIsSearchSheetOpen}
+          />
+        </>
+      )}
     </div>
   );
 }
