@@ -30,7 +30,7 @@ export default function LoginPage() {
               cy="220.5"
               r="107.5"
               fill="#4788C1"
-              fill-opacity="0.21"
+              fillOpacity="0.21"
             />
           </g>
           <defs>
@@ -41,9 +41,9 @@ export default function LoginPage() {
               width="443"
               height="443"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feBlend
                 mode="normal"
                 in="SourceGraphic"
@@ -73,7 +73,7 @@ export default function LoginPage() {
               cy="221.5"
               r="107.5"
               fill="#5A0075"
-              fill-opacity="0.6"
+              fillOpacity="0.6"
             />
           </g>
           <defs>
@@ -84,9 +84,9 @@ export default function LoginPage() {
               width="443"
               height="443"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feBlend
                 mode="normal"
                 in="SourceGraphic"

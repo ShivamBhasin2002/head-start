@@ -65,7 +65,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 cy="220.5"
                 r="107.5"
                 fill="#5A007599"
-                fill-opacity="0.60"
+                fillOpacity="0.60"
               ></circle>
             </g>
             <defs>
@@ -76,12 +76,9 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 width="443"
                 height="443"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood
-                  flood-opacity="0"
-                  result="BackgroundImageFix"
-                ></feFlood>
+                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
                 <feBlend
                   mode="normal"
                   in="SourceGraphic"
@@ -109,7 +106,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 cy="220.5"
                 r="107.5"
                 fill="#5A007599"
-                fill-opacity="0.60"
+                fillOpacity="0.60"
               ></circle>
             </g>
             <defs>
@@ -120,12 +117,9 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 width="443"
                 height="443"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood
-                  flood-opacity="0"
-                  result="BackgroundImageFix"
-                ></feFlood>
+                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
                 <feBlend
                   mode="normal"
                   in="SourceGraphic"
@@ -153,7 +147,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 cy="220.5"
                 r="107.5"
                 fill="#4788C1"
-                fill-opacity="0.21"
+                fillOpacity="0.21"
               ></circle>
             </g>
             <defs>
@@ -164,12 +158,9 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 width="443"
                 height="443"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood
-                  flood-opacity="0"
-                  result="BackgroundImageFix"
-                ></feFlood>
+                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
                 <feBlend
                   mode="normal"
                   in="SourceGraphic"
@@ -197,7 +188,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 cy="220.5"
                 r="107.5"
                 fill="#4788C1"
-                fill-opacity="0.21"
+                fillOpacity="0.21"
               ></circle>
             </g>
             <defs>
@@ -208,12 +199,9 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 width="443"
                 height="443"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood
-                  flood-opacity="0"
-                  result="BackgroundImageFix"
-                ></feFlood>
+                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
                 <feBlend
                   mode="normal"
                   in="SourceGraphic"
@@ -409,9 +397,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                             const input = e.target as HTMLInputElement;
                             input.value = input.value.replace(/[^0-9]/g, "");
                             if (input.value.length === 1) {
-                              (
-                                input.nextElementSibling as HTMLInputElement
-                              )?.focus();
+                              handleConfirm();
                             }
                           }}
                           onKeyDown={(e) => {
