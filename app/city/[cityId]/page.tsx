@@ -8,6 +8,7 @@ import { POICard } from "@/src/components/POICard";
 import { FilterChips } from "@/src/components/FilterChips";
 import { AddPOISheet } from "@/src/components/AddPOISheet";
 import { Plus } from "lucide-react";
+import { Map } from "@/src/components/Map";
 
 interface POI {
   id: string;
@@ -162,6 +163,16 @@ export default function CityPage() {
 
   return (
     <div className=" text-white font-sans h-screen overflow-hidden">
+      <div className="h-full w-full absolute top-0 left-0">
+        <Map
+          pois={pois}
+          selectedPOI={selectedPOI}
+          onMarkerClick={(poi) => {
+            setSelectedPOI(poi);
+            setY(snapPoints[2]);
+          }}
+        />
+      </div>
       <div
         className="fixed inset-x-0 top-0 bottom-0 bg-[#150029] rounded-t-3xl flex flex-col"
         style={sheetStyle}
