@@ -59,10 +59,10 @@ export function RemovePOISheet({
               className="rounded-lg object-cover w-16 h-16"
             />
             <div>
-              <h2 className="font-[Halyard Text] font-semibold text-[21px] leading-[28px] tracking-[0]">
+              <h2 className="font-[halyard-text] font-semibold text-[21px] leading-[28px] tracking-[0]">
                 {poi.name}
               </h2>
-              <p className="font-[Halyard Text] font-light text-[14px] leading-[20px] tracking-[0] text-white/70 mt-1">
+              <p className="font-[halyard-text] font-light text-[14px] leading-[20px] tracking-[0] text-white/70 mt-1">
                 Not feeling it? You can add it later, no FOMO.
               </p>
             </div>

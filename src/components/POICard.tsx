@@ -196,13 +196,13 @@ export function POICard({
           >
             <div className="flex flex-col gap-0.5">
               <span
-                className={`font-[Halyard Text] font-medium text-[12px] leading-[16px] tracking-[0] ${isLight ? "text-[#666666]" : "text-[#ffffff50]"}`}
+                className={`font-[halyard-text] font-medium text-[12px] leading-[16px] tracking-[0] ${isLight ? "text-[#666666]" : "text-[#ffffff50]"}`}
               >
                 from
               </span>
               <div className="flex">
                 <span
-                  className={`font-[Halyard Text] font-medium text-[15px] leading-[20px] tracking-[0] ${isLight ? "text-[#111]" : "text-white"}`}
+                  className={`font-[halyard-text] font-medium text-[15px] leading-[20px] tracking-[0] ${isLight ? "text-[#111]" : "text-white"}`}
                 >
                   {price}
                 </span>
@@ -221,7 +221,7 @@ export function POICard({
                         fill="#078842"
                       />
                     </svg>
-                    <span className="bg-[#078842] text-white font-[Halyard Text] font-medium text-[10px] leading-[12px] tracking-[0] pr-1 py-1 h-4 rounded-r">
+                    <span className="bg-[#078842] text-white font-[halyard-text] font-medium text-[10px] leading-[12px] tracking-[0] pr-1 py-1 h-4 rounded-r">
                       {discountPercentage}% off
                     </span>
                   </>
