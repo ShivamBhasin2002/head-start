@@ -38,18 +38,25 @@ export function CityCard({
           <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
         </div>
       ) : (
-
         <img
           src={imageUrl}
           alt=""
-          style={{ top: 0, left: 0, right: 0, bottom: 0, position: "absolute", minHeight: "100%" }}
+          style={{
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            position: "absolute",
+            minHeight: "100%",
+          }}
           onError={handleImageError}
         />
       )}
       <div
         className="absolute left-0 top-0 right-0 bottom-0 z-10"
         style={{
-          background: "linear-gradient(333deg, rgba(0, 0, 0, 0.00) 44.12%, rgba(0, 0, 0, 0.70) 94.56%)",
+          background:
+            "linear-gradient(333deg, rgba(0, 0, 0, 0.00) 44.12%, rgba(0, 0, 0, 0.70) 94.56%)",
         }}
       >
         <h3 className="absolute left-[18px] top-[21px] font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] whitespace-nowrap">

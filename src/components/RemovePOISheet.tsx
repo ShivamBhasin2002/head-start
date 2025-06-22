@@ -8,7 +8,12 @@ import { useRef } from "react";
 interface POI {
   id: string;
   name: string;
-  imageUrl: string;
+  imageUrl: {
+    url: string;
+    width: number;
+    height: number;
+    photo_reference: string;
+  };
 }
 
 interface RemovePOISheetProps {
@@ -51,8 +56,8 @@ export function RemovePOISheet({
             <X size={24} />
           </button>
           <div className="flex gap-3 items-center mb-9">
-            <Image
-              src={poi.imageUrl}
+            <img
+              src={poi.imageUrl.url}
               alt={poi.name}
               width={82}
               height={72}

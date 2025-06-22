@@ -21,6 +21,27 @@ export interface City {
   name: string;
 }
 
+export interface POI {
+  poi_name: string;
+  category: string;
+  geo_location: [number, number];
+  maps_url: string;
+  website_url: string;
+  photos_links: string[];
+  city: string;
+  tgid: string;
+  source_link: string;
+  added_at: string;
+}
+
+export interface GetPoisResponse {
+  success: boolean;
+  phoneNo: string;
+  pois: POI[];
+  total_pois: number;
+  message: string;
+}
+
 // Login API call
 export async function loginUser(
   credentials: LoginRequest
@@ -100,6 +121,27 @@ export async function logout(): Promise<void> {
     }
   } catch (error) {
     console.error("Logout error:", error);
+    throw error;
+  }
+}
+
+// Get POIs API call
+export async function getPois(): Promise<GetPoisResponse> {
+  try {
+    const response = await fetch("/api/pois", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to get POIs: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Get POIs error:", error);
     throw error;
   }
 }

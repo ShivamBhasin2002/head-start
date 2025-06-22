@@ -21,7 +21,7 @@ export default function LoginPage() {
           viewBox="0 0 375 442"
           fill="none"
           className="fixed top-[-29px]"
-          animate={{ x: ["-100%", "100%"] }}
+          animate={{ x: ["-50%", "50%"] }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
         >
           <g filter="url(#filter0_f_79_14021)">
@@ -64,7 +64,7 @@ export default function LoginPage() {
           viewBox="0 0 375 443"
           fill="none"
           className="fixed top-[43px]"
-          animate={{ x: ["100%", "-100%"] }}
+          animate={{ x: ["50%", "-50%"] }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
         >
           <g filter="url(#filter0_f_79_14022)">
@@ -117,6 +117,7 @@ export default function LoginPage() {
                 className="border-2 border-[#E168FF30] rounded-[100px] px-4 py-3 bg-[rgba(0,0,0,0.60)] backdrop-blur-sm hover:bg-white/20 transition-transform transform active:scale-98 text-[#FFF] font-[halyard-text] text-[16px] font-[500] leading-[20px] tracking-[0px] whitespace-nowrap"
                 onClick={() => setIsSheetOpen(true)}
               >
+                <video src="/signbutton.mp4" controls={false} autoPlay muted loop className="w-[187px] h-[48px] absolute top-0 left-0" />
                 Sign up to get started
               </button>
             </motion.div>
@@ -132,7 +133,7 @@ export default function LoginPage() {
               <p className="text-lg text-white/80 mb-1 font-[halyard-text] font-semibold text-[21px] leading-[28px] tracking-[0]">
                 So...
               </p>
-              <p className="text-2xl font-medium text-white font-[halyard-text] font-semibold text-[21px] leading-[28px] tracking-[0]">
+              <p className="text-2xl font-medium text-white font-[halyard-text] text-[21px] leading-[28px] tracking-[0]">
                 Why Us?
               </p>
             </div>

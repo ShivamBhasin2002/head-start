@@ -26,8 +26,6 @@ export const CityCardCarousel = () => {
         const citiesData = await getCities();
         setCities(citiesData);
 
-        console.log(citiesData);
-
         if (citiesData.length === 0) {
           setIsLoading(false);
           return;

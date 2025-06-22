@@ -238,7 +238,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
             </defs>
           </svg>
           <div className="p-4 rounded-t-2xl flex-1 h-full">
-            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-[#150029] mb-8" />
+            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-[#ffffff30] mb-8" />
             <div className="max-w-md mx-auto">
               <Drawer.Title className="font-medium mb-4 sr-only">
                 {step === "signIn" ? "Sign In" : "Enter OTP"}

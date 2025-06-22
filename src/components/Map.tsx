@@ -11,7 +11,12 @@ interface POI {
   name: string;
   category: string;
   coordinates: { lat: number; lng: number };
-  imageUrl: string;
+  imageUrl: {
+    url: string;
+    width: number;
+    height: number;
+    photo_reference: string;
+  };
 }
 
 interface MapProps {

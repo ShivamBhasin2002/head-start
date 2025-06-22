@@ -18,8 +18,6 @@ export async function fetchCityImages(cityNames: string[]) {
         await delay(100);
       }
 
-      console.log("Fetching image for", city);
-
       const res = await unsplash.search.getPhotos({
         query: `${city} city landscape`,
         perPage: 1,
@@ -35,6 +33,30 @@ export async function fetchCityImages(cityNames: string[]) {
   }
 
   return cityImageMap;
+}
+
+export async function fetchPOIImage(
+  poiName: string,
+  category?: string
+): Promise<string> {
+  try {
+    // Create a search query that combines POI name and category for better results
+    const searchQuery = category
+      ? `${poiName} ${category} landmark`
+      : `${poiName} landmark attraction`;
+
+    const res = await unsplash.search.getPhotos({
+      query: searchQuery,
+      perPage: 1,
+      orientation: "landscape",
+    });
+
+    const image = res?.response?.results?.[0]?.urls?.regular;
+    return image ?? "/tokyo-skytree.jpg";
+  } catch (err) {
+    console.error(`Failed to fetch Unsplash image for POI ${poiName}`, err);
+    return "/tokyo-skytree.jpg";
+  }
 }
 
 // Debounced version to stay within rate limits
@@ -64,7 +86,6 @@ export function getCachedCityImages(): Record<string, string> {
 
 export function setCachedCityImages(cityImageMap: Record<string, string>) {
   if (typeof window === "undefined") return;
-  console.log("Setting cached city images", cityImageMap);
 
   try {
     localStorage.setItem("cityImages", JSON.stringify(cityImageMap));

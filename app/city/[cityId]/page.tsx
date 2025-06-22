@@ -2,8 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
-import { mockCityData } from "@/lib/mockCityData";
-import { mockCityPOIs } from "@/lib/mockCityPOIs";
+import { getCities, getPois, POI as APIPOI } from "@/lib/api";
 import { POICard } from "@/src/components/POICard";
 import { FilterChips } from "@/src/components/FilterChips";
 import { AddPOISheet } from "@/src/components/AddPOISheet";
@@ -15,7 +14,12 @@ interface POI {
   name: string;
   category: string;
   coordinates: { lat: number; lng: number };
-  imageUrl: string;
+  imageUrl: {
+    url: string;
+    width: number;
+    height: number;
+    photo_reference: string;
+  };
   price?: number;
   discountPercent?: number;
   tgid?: string;
@@ -23,12 +27,14 @@ interface POI {
 
 export default function CityPage() {
   const params = useParams();
-  const cityId = params.cityId as keyof typeof mockCityPOIs;
+  const cityId = decodeURIComponent(params.cityId as string);
 
   const [cityData, setCityData] = useState<any>(null);
   const [pois, setPois] = useState<POI[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isSheetOpen, setSheetOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [windowHeight, setWindowHeight] = useState(0);
   const [y, setYState] = useState(0);
@@ -38,6 +44,23 @@ export default function CityPage() {
   const dragStartRef = useRef({ y: 0, sheetY: 0 });
 
   const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
+
+  // Transform API POI to component POI format
+  const transformAPIPOIToPOI = (apiPOI: APIPOI): POI => {
+    return {
+      id: apiPOI.tgid || apiPOI.poi_name,
+      name: apiPOI.poi_name,
+      category: apiPOI.category,
+      coordinates: { lat: apiPOI.geo_location[0], lng: apiPOI.geo_location[1] },
+      imageUrl: {
+        url: apiPOI.photos_links[0],
+        width: 0,
+        height: 0,
+        photo_reference: "",
+      },
+      tgid: apiPOI.tgid,
+    };
+  };
 
   const handleRemovePOI = (poiId: string) => {
     setPois((currentPois) => currentPois.filter((p) => p.id !== poiId));
@@ -137,10 +160,44 @@ export default function CityPage() {
   );
 
   useEffect(() => {
-    const currentCityData = mockCityData.find((c) => c.id === cityId);
-    const cityPois = (mockCityPOIs[cityId] || []) as POI[];
-    if (currentCityData) setCityData(currentCityData);
-    if (cityPois) setPois(cityPois);
+    const loadCityData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // Get cities to find the current city
+        const cities = await getCities();
+        const currentCity = cities.find(
+          (city) => city.toLowerCase() === cityId.toLowerCase()
+        );
+
+        if (!currentCity) {
+          setError("City not found");
+          setIsLoading(false);
+          return;
+        }
+
+        // Set city data
+        setCityData({ id: cityId, name: currentCity });
+
+        // Get POIs for the user
+        const poisResponse = await getPois();
+
+        // Filter POIs for the current city and transform to component format
+        const cityPois = poisResponse.pois
+          .filter((poi) => poi.city.toLowerCase() === cityId.toLowerCase())
+          .map(transformAPIPOIToPOI);
+
+        setPois(cityPois);
+      } catch (error) {
+        console.error("Failed to load city data:", error);
+        setError("Failed to load city data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadCityData();
   }, [cityId]);
 
   const filteredPOIs = useMemo(() => {
@@ -148,8 +205,26 @@ export default function CityPage() {
     return pois.filter((poi) => selectedCategories.includes(poi.category));
   }, [pois, selectedCategories]);
 
+  if (error) {
+    return <div className="text-white text-center py-12">{error}</div>;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="text-white text-center h-screen relative">
+        <video
+          src="/loader.mp4"
+          height="100vh"
+          controls={false}
+          autoPlay={true}
+          className="height-[100vh] absolute bottom-0"
+        />
+      </div>
+    );
+  }
+
   if (!cityData) {
-    return <div>City not found</div>;
+    return <div className="text-white text-center py-12">City not found</div>;
   }
 
   const sheetStyle: React.CSSProperties = {
@@ -191,59 +266,79 @@ export default function CityPage() {
               Your trip to {cityData.name}
             </h1>
             <svg
-              width="127"
+              width="79"
               height="36"
-              viewBox="0 0 127 36"
+              viewBox="0 0 79 36"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="pressable"
             >
-              <g filter="url(#filter0_d_5_878)">
+              <g filter="url(#filter0_d_234_3298)">
                 <rect
                   x="0"
                   y="0"
-                  width="127"
+                  width="79"
                   height="36"
                   rx="18"
-                  fill="url(#paint0_linear_5_878)"
-                  fillOpacity="0.3"
-                  shapeRendering="crispEdges"
+                  fill="url(#paint0_linear_234_3298)"
+                  fill-opacity="0.3"
+                  shape-rendering="crispEdges"
                 />
                 <rect
                   x="0.5"
                   y="0.5"
-                  width="126"
+                  width="78"
                   height="35"
                   rx="17.5"
                   stroke="white"
-                  strokeOpacity="0.1"
-                  shapeRendering="crispEdges"
+                  stroke-opacity="0.1"
+                  shape-rendering="crispEdges"
                 />
                 <path
-                  d="M20 11.3333L20.3592 12.9277C20.6638 14.2801 21.7199 15.3362 23.0723 15.6408L24.6667 16L23.0723 16.3591C21.7199 16.6638 20.6638 17.7199 20.3592 19.0723L20 20.6666L19.6409 19.0723C19.3362 17.7199 18.2801 16.6638 16.9278 16.3591L15.3334 16L16.9278 15.6408C18.2801 15.3362 19.3362 14.2801 19.6409 12.9277L20 11.3333Z"
-                  fill="#D9D9D9"
-                />
-                <path
-                  d="M14.6667 18L14.9232 19.1388C15.1408 20.1048 15.8952 20.8592 16.8612 21.0768L18 21.3333L16.8612 21.5899C15.8952 21.8075 15.1408 22.5618 14.9232 23.5278L14.6667 24.6667L14.4102 23.5278C14.1926 22.5618 13.4382 21.8075 12.4722 21.5899L11.3334 21.3333L12.4722 21.0768C13.4382 20.8592 14.1926 20.1048 14.4102 19.1388L14.6667 18Z"
-                  fill="#D9D9D9"
-                />
-                <path
-                  d="M36.732 23.168C34.226 23.168 32.616 21.208 32.616 18.394C32.616 15.454 34.38 13.564 37.194 13.564C39.182 13.564 40.47 14.46 41.044 15.944L39.266 16.49C38.986 15.496 38.3 14.964 37.194 14.964C35.486 14.964 34.38 16.168 34.38 18.296V18.366C34.38 20.494 35.36 21.782 37.026 21.782C38.37 21.782 39.406 21.054 39.49 19.486H37.222V17.988H41.156V23H39.84L39.7 20.62C39.392 22.286 38.314 23.168 36.732 23.168ZM48.9391 19.346C48.9391 19.5 48.9251 19.78 48.9111 19.864H44.2211C44.3191 21.306 45.0191 21.88 46.0131 21.88C46.7411 21.88 47.3431 21.502 47.6091 20.984L48.7151 21.754C48.1831 22.552 47.2871 23.168 45.9011 23.168C43.7311 23.168 42.5271 21.796 42.5271 19.5C42.5271 17.232 43.7591 15.818 45.8591 15.818C48.0851 15.818 48.9391 17.316 48.9391 19.346ZM45.8031 17.05C44.9491 17.05 44.3331 17.512 44.2491 18.8H47.2171V18.772C47.2171 17.75 46.8531 17.05 45.8031 17.05ZM50.4953 23V16H52.1193V16.952C52.1193 17.148 52.0773 17.806 52.0773 17.806H52.1613C52.5533 16.574 53.4213 15.832 54.5693 15.832C55.8853 15.832 56.6973 16.616 56.6973 18.324V23H54.9893V18.758C54.9893 17.61 54.5133 17.288 53.8273 17.288C52.9733 17.288 52.1893 18.058 52.1753 19.402V23H50.4953ZM64.6481 19.346C64.6481 19.5 64.6341 19.78 64.6201 19.864H59.9301C60.0281 21.306 60.7281 21.88 61.7221 21.88C62.4501 21.88 63.0521 21.502 63.3181 20.984L64.4241 21.754C63.8921 22.552 62.9961 23.168 61.6101 23.168C59.4401 23.168 58.2361 21.796 58.2361 19.5C58.2361 17.232 59.4681 15.818 61.5681 15.818C63.7941 15.818 64.6481 17.316 64.6481 19.346ZM61.5121 17.05C60.6581 17.05 60.0421 17.512 59.9581 18.8H62.9261V18.772C62.9261 17.75 62.5621 17.05 61.5121 17.05ZM66.2043 23V16H67.7863V16.924L67.6323 19.066H67.7443C67.8563 17.68 68.4443 15.888 70.11 15.888H70.292V17.918H69.7463C68.3883 17.918 67.8843 18.786 67.8703 20.298V23H66.2043ZM73.269 23.14C71.925 23.14 71.169 22.356 71.169 21.166C71.169 19.85 72.163 19.304 73.577 19.024C74.921 18.744 75.425 18.59 75.467 18.408V18.282C75.467 17.54 75.061 17.134 74.179 17.134C73.325 17.134 72.765 17.624 72.527 18.17L71.239 17.484C71.729 16.448 72.919 15.846 74.361 15.846C76.195 15.846 77.119 16.728 77.119 18.422V20.704C77.119 22.174 77.287 22.776 77.525 23H75.817C75.635 22.832 75.523 22.3 75.481 21.544C75.187 22.51 74.319 23.14 73.269 23.14ZM73.787 21.922C74.599 21.922 75.285 21.39 75.467 20.592V19.122C75.313 19.346 75.033 19.514 74.473 19.668C73.367 19.962 72.863 20.326 72.863 20.998C72.863 21.6 73.283 21.922 73.787 21.922ZM81.378 23.126C80.034 23.126 79.502 22.608 79.502 21.04V17.372H78.424V16H79.586V14.404L81.084 13.718V15.524L81.014 16H82.68V17.372H81.014L81.084 17.834V20.816C81.084 21.614 81.252 21.712 81.966 21.712C82.302 21.712 82.596 21.656 82.918 21.572V22.818C82.484 22.986 81.91 23.126 81.378 23.126ZM90.242 19.346C90.242 19.5 90.228 19.78 90.214 19.864H85.524C85.622 21.306 86.322 21.88 87.316 21.88C88.044 21.88 88.646 21.502 88.912 20.984L90.018 21.754C89.486 22.552 88.59 23.168 87.204 23.168C85.034 23.168 83.83 21.796 83.83 19.5C83.83 17.232 85.062 15.818 87.162 15.818C89.388 15.818 90.242 17.316 90.242 19.346ZM87.106 17.05C86.252 17.05 85.636 17.512 85.552 18.8H88.52V18.772C88.52 17.75 88.156 17.05 87.106 17.05ZM97.155 23.126C95.811 23.126 95.279 22.608 95.279 21.04V17.372H94.201V16H95.363V14.404L96.861 13.718V15.524L96.791 16H98.457V17.372H96.791L96.861 17.834V20.816C96.861 21.614 97.029 21.712 97.743 21.712C98.079 21.712 98.373 21.656 98.695 21.572V22.818C98.261 22.986 97.687 23.126 97.155 23.126ZM100.07 23V16H101.652V16.924L101.498 19.066H101.61C101.722 17.68 102.31 15.888 103.976 15.888H104.158V17.918H103.612C102.254 17.918 101.75 18.786 101.736 20.298V23H100.07ZM105.511 14.908C105.441 14.908 105.413 14.866 105.413 14.796V13.34C105.413 13.256 105.455 13.214 105.539 13.214H107.163C107.233 13.214 107.275 13.256 107.275 13.34V14.796C107.275 14.866 107.233 14.908 107.163 14.908H105.511ZM105.511 23V16H107.177V23H105.511ZM109.271 25.954V16H110.881V16.532L110.839 17.456H110.909C111.245 16.546 112.085 15.804 113.205 15.804C114.927 15.804 115.879 17.078 115.879 19.29C115.879 21.782 114.675 23.098 113.079 23.098C111.959 23.098 111.161 22.328 110.811 21.362H110.713L110.895 23.042V25.954H109.271ZM112.561 21.838C113.527 21.838 114.115 20.802 114.115 19.43C114.115 17.946 113.625 17.064 112.589 17.064C111.441 17.064 110.839 18.366 110.839 19.318V19.696C110.839 20.83 111.343 21.838 112.561 21.838Z"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M19.5 14.3333C19.5 12.9526 20.6193 11.8333 22 11.8333C23.3807 11.8333 24.5 12.9526 24.5 14.3333C24.5 15.7141 23.3807 16.8333 22 16.8333C20.6193 16.8333 19.5 15.7141 19.5 14.3333Z"
                   fill="white"
-                  fillOpacity="0.8"
+                  fill-opacity="0.8"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M11.5 18C11.5 16.6193 12.6193 15.5 14 15.5C15.3807 15.5 16.5 16.6193 16.5 18C16.5 19.3807 15.3807 20.5 14 20.5C12.6193 20.5 11.5 19.3807 11.5 18Z"
+                  fill="white"
+                  fill-opacity="0.8"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M19.5 21.6667C19.5 20.2859 20.6193 19.1667 22 19.1667C23.3807 19.1667 24.5 20.2859 24.5 21.6667C24.5 23.0474 23.3807 24.1667 22 24.1667C20.6193 24.1667 19.5 23.0474 19.5 21.6667Z"
+                  fill="white"
+                  fill-opacity="0.8"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M20.4311 15.7732L16.0977 17.7728L15.5391 16.5621L19.8724 14.5625L20.4311 15.7732ZM16.0977 18.2291L20.4311 20.2288L19.8724 21.4395L15.5391 19.4398L16.0977 18.2291Z"
+                  fill="white"
+                  fill-opacity="0.8"
+                />
+                <path
+                  d="M35.85 23.154C34.156 23.154 32.91 22.44 32.434 20.914L33.946 20.312C34.254 21.306 35.01 21.754 35.92 21.754C36.956 21.754 37.558 21.306 37.558 20.508C37.558 19.71 36.914 19.416 35.36 18.94C33.624 18.408 32.742 17.722 32.756 16.168C32.756 14.712 34.044 13.578 35.99 13.578C37.74 13.578 38.902 14.348 39.266 15.692L37.824 16.308C37.572 15.454 36.984 14.964 35.99 14.964C34.87 14.964 34.436 15.51 34.436 16.07C34.436 16.77 34.702 17.05 36.382 17.568C38.034 18.072 39.322 18.716 39.322 20.326C39.322 22.062 37.88 23.154 35.85 23.154ZM40.966 23V12.682H42.59V16.812C42.59 17.008 42.52 17.806 42.52 17.806H42.604C42.996 16.574 43.864 15.832 45.026 15.832C46.342 15.832 47.154 16.616 47.154 18.324V23H45.446V18.758C45.446 17.61 44.956 17.288 44.256 17.288C43.402 17.288 42.604 18.142 42.59 19.542V23H40.966ZM50.7101 23.14C49.3661 23.14 48.6101 22.356 48.6101 21.166C48.6101 19.85 49.6041 19.304 51.0181 19.024C52.3621 18.744 52.8661 18.59 52.9081 18.408V18.282C52.9081 17.54 52.5021 17.134 51.6201 17.134C50.7661 17.134 50.2061 17.624 49.9681 18.17L48.6801 17.484C49.1701 16.448 50.3601 15.846 51.8021 15.846C53.6361 15.846 54.5601 16.728 54.5601 18.422V20.704C54.5601 22.174 54.7281 22.776 54.9661 23H53.2581C53.0761 22.832 52.9641 22.3 52.9221 21.544C52.6281 22.51 51.7601 23.14 50.7101 23.14ZM51.2281 21.922C52.0401 21.922 52.7261 21.39 52.9081 20.592V19.122C52.7541 19.346 52.4741 19.514 51.9141 19.668C50.8081 19.962 50.3041 20.326 50.3041 20.998C50.3041 21.6 50.7241 21.922 51.2281 21.922ZM56.6066 23V16H58.1886V16.924L58.0346 19.066H58.1466C58.2586 17.68 58.8466 15.888 60.5126 15.888H60.6946V17.918H60.1486C58.7906 17.918 58.2866 18.786 58.2726 20.298V23H56.6066ZM67.902 19.346C67.902 19.5 67.888 19.78 67.874 19.864H63.184C63.282 21.306 63.982 21.88 64.976 21.88C65.704 21.88 66.306 21.502 66.572 20.984L67.678 21.754C67.146 22.552 66.25 23.168 64.864 23.168C62.694 23.168 61.49 21.796 61.49 19.5C61.49 17.232 62.722 15.818 64.822 15.818C67.048 15.818 67.902 17.316 67.902 19.346ZM64.766 17.05C63.912 17.05 63.296 17.512 63.212 18.8H66.18V18.772C66.18 17.75 65.816 17.05 64.766 17.05Z"
+                  fill="white"
+                  fill-opacity="0.8"
                 />
               </g>
               <defs>
                 <filter
-                  id="filter0_d_5_878"
+                  id="filter0_d_234_3298"
                   x="0"
                   y="0"
-                  width="127"
+                  width="79"
                   height="36"
                   filterUnits="userSpaceOnUse"
-                  colorInterpolationFilters="sRGB"
+                  color-interpolation-filters="sRGB"
                 >
-                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"
@@ -260,30 +355,30 @@ export default function CityPage() {
                   <feBlend
                     mode="normal"
                     in2="BackgroundImageFix"
-                    result="effect1_dropShadow_5_878"
+                    result="effect1_dropShadow_234_3298"
                   />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
-                    in2="effect1_dropShadow_5_878"
+                    in2="effect1_dropShadow_234_3298"
                     result="shape"
                   />
                 </filter>
                 <linearGradient
-                  id="paint0_linear_5_878"
+                  id="paint0_linear_234_3298"
                   x1="0"
                   y1="18"
-                  x2="127"
+                  x2="79"
                   y2="18"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stopColor="#F38BFF" />
+                  <stop stop-color="#F38BFF" />
                   <stop
                     offset="0.346565"
-                    stopColor="#7019AA"
-                    stopOpacity="0.2"
+                    stop-color="#7019AA"
+                    stop-opacity="0.2"
                   />
-                  <stop offset="0.616593" stopColor="#3E5288" />
+                  <stop offset="0.616593" stop-color="#3E5288" />
                 </linearGradient>
               </defs>
             </svg>
@@ -307,7 +402,7 @@ export default function CityPage() {
               </button>
             </div>
             <div className="space-y-4 -mt-6 pt-6 pb-[400px]">
-              {filteredPOIs.map((poi) => (
+              {filteredPOIs.map((poi: any) => (
                 <POICard
                   key={poi.id}
                   poi={poi}
@@ -316,9 +411,7 @@ export default function CityPage() {
                     setY(snapPoints[2]);
                   }}
                   onRemove={() => handleRemovePOI(poi.id)}
-                  onViewSources={() => {
-                    setSelectedPOI(poi);
-                  }}
+                  onViewSources={() => {}}
                 />
               ))}
             </div>

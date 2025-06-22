@@ -1,15 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RemovePOISheet } from "./RemovePOISheet";
+import { fetchPOIImage, isUnsplashConfigured } from "@/lib/unsplash";
 
 interface POICardProps {
   poi: {
     id: string;
     name: string;
     category: string;
-    imageUrl: string;
+    imageUrl: {
+      photo_reference: string;
+      url: string;
+      width: number;
+      height: number;
+    };
     price?: number;
     discountPercent?: number;
     tgid?: string;
@@ -31,6 +37,45 @@ export function POICard({
   const discountPercentage = 5;
   const price = "$40.84";
   const [isRemoveSheetOpen, setRemoveSheetOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState(poi.imageUrl.url);
+  const [imageError, setImageError] = useState(false);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
+
+  // Handle image loading and fallback to Unsplash
+  useEffect(() => {
+    const loadImage = async () => {
+      // If we have a valid imageUrl and no error, use it
+      if (poi.imageUrl && !imageError) {
+        setImageUrl(poi.imageUrl.url);
+        return;
+      }
+
+      // If image failed to load or no imageUrl, try Unsplash
+      if (imageError || !poi.imageUrl) {
+        if (isUnsplashConfigured()) {
+          setIsLoadingImage(true);
+          try {
+            const unsplashImage = await fetchPOIImage(poi.name, poi.category);
+            setImageUrl(unsplashImage);
+          } catch (error) {
+            console.error("Failed to fetch Unsplash image:", error);
+            setImageUrl("/tokyo-skytree.jpg");
+          } finally {
+            setIsLoadingImage(false);
+          }
+        } else {
+          // Fallback to default image if Unsplash is not configured
+          setImageUrl("/tokyo-skytree.jpg");
+        }
+      }
+    };
+
+    loadImage();
+  }, [poi.imageUrl, poi.name, poi.category, imageError]);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <>
@@ -42,13 +87,20 @@ export function POICard({
         }`}
       >
         <div className="flex gap-3 mb-[18px] items-center">
-          <Image
-            src={poi.imageUrl}
-            alt={poi.name}
-            width={62}
-            height={53}
-            className="rounded-lg object-cover w-[62px] h-[53px]"
-          />
+          <div className="relative w-[62px] h-[53px] rounded-lg overflow-hidden">
+            {isLoadingImage && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+                <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
+            <img
+              src={imageUrl}
+              width={62}
+              height={53}
+              className="rounded-lg object-cover w-[62px] h-[53px]"
+              onError={handleImageError}
+            />
+          </div>
           <div className="flex-1 flex flex-col justify-between">
             <h3
               className={`font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] ${

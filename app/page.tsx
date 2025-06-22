@@ -394,7 +394,6 @@ export default function HomePage() {
               }
             })
             .catch((err) => {
-              console.log(err);
               setInputState("idle");
             });
         }}
@@ -524,7 +523,12 @@ export default function HomePage() {
             </span>
           </div>
 
-          <div className="bg-[#51F07E17] rounded-2xl p-4 pressable">
+          <div
+            className="bg-[#51F07E17] rounded-2xl p-4 pressable"
+            onClick={() => {
+              window.open("https://www.wa.link/0qm9xn", "_blank");
+            }}
+          >
             <h3 className="font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] text-center flex gap-2 justify-center">
               Simply use our WhatsApp bot
               <svg
