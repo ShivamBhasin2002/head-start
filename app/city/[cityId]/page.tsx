@@ -271,7 +271,10 @@ export default function CityPage() {
             </svg>
           </div>
 
-          <FilterChips onFilterChange={setSelectedCategories} />
+          <FilterChips
+            onFilterChange={setSelectedCategories}
+            showGradient={y !== snapPoints[2]}
+          />
           <div
             className="overflow-y-auto"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}

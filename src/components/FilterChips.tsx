@@ -15,9 +15,10 @@ const categories = [
 
 interface FilterChipsProps {
   onFilterChange: (selectedCategories: string[]) => void;
+  showGradient?: boolean;
 }
 
-export function FilterChips({ onFilterChange }: FilterChipsProps) {
+export function FilterChips({ onFilterChange, showGradient }: FilterChipsProps) {
   const [selected, setSelected] = useState<string[]>([]);
 
   const toggleCategory = (category: string) => {
@@ -29,7 +30,13 @@ export function FilterChips({ onFilterChange }: FilterChipsProps) {
   };
 
   return (
-    <div className="-mx-4 min-h-[32px] px-4 relative after:content-[''] after:absolute after:top-[32px] after:left-0 after:right-0 after:h-6 after:bg-gradient-to-b after:from-[#150029] after:to-transparent">
+    <div
+      className={`-mx-4 min-h-[32px] px-4 relative after:content-[''] after:absolute after:top-[32px] after:left-0 after:right-0 after:h-6 ${
+        showGradient
+          ? "after:bg-gradient-to-b after:from-[#150029] after:to-transparent"
+          : "after:bg-[#150029]"
+      }`}
+    >
       <div
         className="flex gap-2 overflow-x-auto"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}

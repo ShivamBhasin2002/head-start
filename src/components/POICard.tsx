@@ -216,6 +216,7 @@ export function POICard({ poi, onSelect, isLight }: POICardProps) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="pressable"
+            onClick={() => window.open(`https://www.headout.com/tour/${tgid}`)}
           >
             <mask
               id="path-1-inside-1_5_8105"
