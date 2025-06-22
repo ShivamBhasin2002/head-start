@@ -30,19 +30,28 @@ export function CityCard({
 
   return (
     <div
-      className="w-[231px] h-[319px] rounded-3xl bg-cover bg-center flex pressable shadow-[0px_4px_33px_0px_#C852FF40] border-[5px] border-[#FFFFFF10] bg-gradient-to-br from-transparent to-black/70 relative"
-      style={{
-        backgroundImage: isLoading ? "none" : `url(${finalImageUrl})`,
-        backgroundColor: isLoading ? "#2a1b3d" : "transparent",
-      }}
+      className="w-[231px] h-[319px] rounded-3xl bg-cover bg-center flex pressable shadow-[0px_4px_33px_0px_rgba(200,82,255,0.25)] border-5 border-white/10 bg-no-repeat relative overflow-hidden"
       onClick={() => router.push(`/city/${id}`)}
     >
-      {isLoading && (
+      {isLoading ? (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
         </div>
+      ) : (
+
+        <img
+          src={imageUrl}
+          alt=""
+          style={{ top: 0, left: 0, right: 0, bottom: 0, position: "absolute", minHeight: "100%" }}
+          onError={handleImageError}
+        />
       )}
-      <div className="relative z-10">
+      <div
+        className="absolute left-0 top-0 right-0 bottom-0 z-10"
+        style={{
+          background: "linear-gradient(333deg, rgba(0, 0, 0, 0.00) 44.12%, rgba(0, 0, 0, 0.70) 94.56%)",
+        }}
+      >
         <h3 className="absolute left-[18px] top-[21px] font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] whitespace-nowrap">
           Your trip to
         </h3>

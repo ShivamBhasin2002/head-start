@@ -4,8 +4,8 @@ import { Drawer } from "vaul";
 import { ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { setCookie } from "nookies";
 import { useRouter } from "next/navigation";
+import { loginUser } from "@/lib/api";
 
 interface SignInSheetProps {
   open: boolean;
@@ -17,18 +17,40 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
   const [step, setStep] = useState<"signIn" | "otp">("signIn");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleConfirm = () => {
-    // any random OTP is fine
-    setCookie(null, "username", name, {
-      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
-      path: "/",
-    });
-    setCookie(null, "number", phone, {
-      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
-      path: "/",
-    });
-    router.push("/");
+  const handleProceed = async () => {
+    if (!name.trim() || !phone.trim()) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    setError(null);
+    setStep("otp");
+  };
+
+  const handleConfirm = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const response = await loginUser({
+        name: name.trim(),
+        phoneNo: phone.trim(),
+      });
+
+      if (response.success) {
+        router.push("/");
+      } else {
+        setError(response.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Failed to authenticate. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const drawerContent = {
@@ -41,7 +63,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
     "w-12 h-14 bg-white/10 rounded-lg text-white text-2xl text-center focus:outline-none focus:ring-2 focus:ring-white/50";
 
   const buttonClasses =
-    " bg-white text-black mt-8 rounded-lg py-4 font-[halyard-text] font-medium text-[16px] leading-[20px] tracking-[0] absolute bottom-[34px] left-[16px] right-[16px]";
+    " bg-white text-black mt-8 rounded-lg py-4 font-[halyard-text] font-medium text-[16px] leading-[20px] tracking-[0] absolute bottom-[34px] left-[16px] right-[16px] disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
     <Drawer.Root shouldScaleBackground open={open} onOpenChange={onOpenChange}>
@@ -221,6 +243,13 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
               <Drawer.Title className="font-medium mb-4 sr-only">
                 {step === "signIn" ? "Sign In" : "Enter OTP"}
               </Drawer.Title>
+
+              {error && (
+                <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-300 text-sm">
+                  {error}
+                </div>
+              )}
+
               <AnimatePresence mode="wait" initial={false}>
                 {step === "signIn" ? (
                   <motion.div
@@ -426,12 +455,20 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                 )}
               </AnimatePresence>
               <button
-                onClick={
-                  step === "signIn" ? () => setStep("otp") : handleConfirm
-                }
+                onClick={step === "signIn" ? handleProceed : handleConfirm}
+                disabled={isLoading}
                 className={buttonClasses}
               >
-                {step === "signIn" ? "Proceed" : "Confirm"}
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin mr-2"></div>
+                    {step === "signIn" ? "Processing..." : "Authenticating..."}
+                  </div>
+                ) : step === "signIn" ? (
+                  "Proceed"
+                ) : (
+                  "Confirm"
+                )}
               </button>
             </div>
             <Drawer.Close asChild className="absolute top-4 right-4">

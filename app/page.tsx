@@ -10,6 +10,8 @@ import { SearchSheet } from "@/src/components/SearchSheet";
 import { containerVariants, itemVariants } from "@/lib/mockCityData";
 import { parseCookies } from "nookies";
 import { CityCardCarousel } from "@/src/components/CityCardCarousel";
+import { getCities } from "@/lib/api";
+import { API_URL } from "@/src/constants";
 
 const tripInspirations = {
   Worldwide: [
@@ -61,10 +63,10 @@ export default function HomePage() {
   const [isSearchSheetOpen, setIsSearchSheetOpen] = useState(false);
   const [username, setUsername] = useState("Traveller");
   const [waId, setWaId] = useState("");
-
   const [inputState, setInputState] = useState<"idle" | "loading" | "success">(
     "idle"
   );
+  const [isNewUser, setIsNewUser] = useState<boolean | null>(null);
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -78,7 +80,31 @@ export default function HomePage() {
     }
   }, []);
 
-  const isNewUser = false;
+  useEffect(() => {
+    async function checkCities() {
+      try {
+        const cities = await getCities();
+        setIsNewUser(!cities || cities.length === 0);
+      } catch (e) {
+        setIsNewUser(true); // treat as new user if error
+      }
+    }
+    checkCities();
+  }, []);
+
+  if (isNewUser === null) {
+    return (
+      <div className="text-center py-12 text-white/60 relative h-screen">
+        <video
+          src="/loader.mp4"
+          height="100vh"
+          controls={false}
+          autoPlay={true}
+          className="height-[100vh] absolute bottom-0"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-b from-[#1a0b2e] to-[#0d001a] min-h-screen text-white font-sans overflow-hidden relative px-4">
@@ -89,8 +115,6 @@ export default function HomePage() {
         viewBox="0 0 375 442"
         fill="none"
         className="fixed top-[-60px]"
-        animate={{ x: ["-100%", "100%"] }}
-        transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
       >
         <g filter="url(#filter0_f_79_14021)">
           <circle
@@ -132,8 +156,6 @@ export default function HomePage() {
         viewBox="0 0 375 443"
         fill="none"
         className="fixed top-[3px]"
-        animate={{ x: ["100%", "-100%"] }}
-        transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
       >
         <g filter="url(#filter0_f_79_14022)">
           <circle
@@ -331,28 +353,38 @@ export default function HomePage() {
         </div>
       </motion.div>
 
-      {!isNewUser && <CityCardCarousel />}
+      {isNewUser ? (
+        <div className="w-full text-center py-8">
+          <p className="text-white/60 text-lg">
+            Welcome! Start by adding your first city to begin planning your
+            trip.
+          </p>
+        </div>
+      ) : (
+        <CityCardCarousel />
+      )}
 
       <div className="font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] text-center">
         Have an inspiration?
       </div>
 
       <form
-        className={`mt-4 relative max-w-2xl overflow-hidden ${isNewUser ? "mx-auto" : "mx-[28px]"}`}
+        className={`mt-4 relative max-w-2xl overflow-hidden rounded-2xl ${isNewUser ? "mx-auto" : "mx-[28px]"}`}
         onSubmit={(e) => {
           e.preventDefault();
           setInputState("loading");
-          fetch(
-            "https://guarantees-estate-lead-penalties.trycloudflare.com/api/v1/process-message",
-            {
-              method: "POST",
-              body: JSON.stringify({
-                text: (e.target as HTMLFormElement).message.value,
-                waId,
-                senderName: username,
-              }),
-            }
-          )
+          fetch(`${API_URL}/api/v1/process-message`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify({
+              text: (e.target as HTMLFormElement).message.value,
+              waId,
+              senderName: username,
+            }),
+          })
             .then((r) => {
               if (r.status === 200) {
                 setInputState("success");
@@ -504,8 +536,8 @@ export default function HomePage() {
               >
                 <g clipPath="url(#clip0_54_1547)">
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M1.59351 23.0065L3.17048 17.2494C2.1976 15.5647 1.68599 13.6529 1.68658 11.6949C1.68951 5.56901 6.67448 0.585205 12.8009 0.585205C15.774 0.586376 18.5638 1.74364 20.6624 3.84335C22.7603 5.94364 23.9158 8.73467 23.9147 11.7036C23.9123 17.8295 18.9262 22.8139 12.8009 22.8139H12.7962C10.9365 22.8133 9.10843 22.3468 7.48521 21.4611L1.59351 23.0065Z"
                     fill="white"
                   />
@@ -516,14 +548,14 @@ export default function HomePage() {
                     strokeWidth="0.6"
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M19.3346 5.16982C17.5902 3.42426 15.2716 2.4625 12.8037 2.46191C7.70865 2.46191 3.56484 6.60396 3.5625 11.6955C3.56192 13.4405 4.05011 15.1392 4.97499 16.6102L5.19509 16.9597L4.26143 20.3671L7.75782 19.4504L8.09557 19.6506C9.51333 20.4924 11.1395 20.9372 12.7972 20.9378H12.8007C17.8923 20.9378 22.0361 16.7952 22.0378 11.7031C22.0384 9.23577 21.079 6.91538 19.3346 5.16982Z"
                     fill="#40C351"
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M10.0226 7.0509C9.81483 6.58847 9.59591 6.5791 9.39747 6.5709C9.23532 6.56388 9.05034 6.56447 8.86537 6.56447C8.68039 6.56447 8.37951 6.63412 8.12488 6.91217C7.87025 7.19022 7.15259 7.86164 7.15259 9.22788C7.15259 10.5941 8.14771 11.9147 8.28644 12.0997C8.42517 12.2847 10.2076 15.1781 13.0302 16.2915C15.3758 17.2164 15.8535 17.0326 16.3627 16.9863C16.872 16.9401 18.0059 16.3149 18.2371 15.6663C18.4683 15.0177 18.4683 14.4622 18.3992 14.3463C18.3296 14.2304 18.1446 14.1613 17.8671 14.022C17.5897 13.8827 16.224 13.2113 15.9694 13.1188C15.7147 13.0263 15.5298 12.9801 15.3442 13.2581C15.1592 13.5356 14.6271 14.1613 14.465 14.3463C14.3028 14.5319 14.1407 14.5553 13.8632 14.416C13.5858 14.2767 12.6913 13.984 11.6301 13.038C10.8047 12.3022 10.2474 11.3931 10.0853 11.1151C9.92312 10.8376 10.0677 10.6872 10.207 10.5485C10.3317 10.4238 10.4845 10.2242 10.6238 10.062C10.7625 9.89988 10.8088 9.78398 10.9013 9.599C10.9938 9.41344 10.9475 9.25129 10.8779 9.11256C10.8094 8.97325 10.2697 7.59998 10.0226 7.0509Z"
                     fill="white"
                   />

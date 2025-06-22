@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-
   // Parse cookies from the cookie string
   const cookieHeader = req.headers.get("cookie") || "";
   const cookies = Object.fromEntries(
@@ -37,5 +36,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|static|favicon.ico|api).*)"],
+  matcher: ["/((?!_next|static|favicon.png|api).*)"],
 };

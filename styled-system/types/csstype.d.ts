@@ -18416,7 +18416,7 @@ export interface SvgPropertiesHyphen<
   "baseline-shift"?: Property.BaselineShift<TLength> | undefined;
   clip?: Property.Clip | undefined;
   clipP?: Property.ClipPath | undefined;
-  "clip-rule"?: Property.ClipRule | undefined;
+  clipRule?: Property.ClipRule | undefined;
   color?: Property.Color | undefined;
   "color-interpolation"?: Property.ColorInterpolation | undefined;
   "color-rendering"?: Property.ColorRendering | undefined;
@@ -18426,7 +18426,7 @@ export interface SvgPropertiesHyphen<
   "dominant-baseline"?: Property.DominantBaseline | undefined;
   fill?: Property.Fill | undefined;
   fillOpacity?: Property.FillOpacity | undefined;
-  "fill-rule"?: Property.FillRule | undefined;
+  fillRule?: Property.FillRule | undefined;
   filter?: Property.Filter | undefined;
   "flood-color"?: Property.FloodColor | undefined;
   floodOpacity?: Property.FloodOpacity | undefined;
@@ -18966,7 +18966,7 @@ export type SvgAttributes =
   | "[cap-height]"
   | "[class]"
   | "[clipP]"
-  | "[clip-rule]"
+  | "[clipRule]"
   | "[clipPathUnits]"
   | "[clip]"
   | "[colorInterpolationFilters]"
@@ -18997,7 +18997,7 @@ export type SvgAttributes =
   | "[elevation]"
   | "[enable-background]"
   | "[fillOpacity]"
-  | "[fill-rule]"
+  | "[fillRule]"
   | "[fill]"
   | "[filterRes]"
   | "[filterUnits]"

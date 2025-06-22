@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { mockCityData } from "@/lib/mockCityData";
 import { CityCard } from "./CityCard";
 import {
   fetchCityImages,
@@ -9,73 +8,117 @@ import {
   setCachedCityImages,
   isUnsplashConfigured,
 } from "@/lib/unsplash";
+import { getCities, City } from "@/lib/api";
 
 export const CityCardCarousel = () => {
+  const [cities, setCities] = useState<string[]>([]);
   const [cityImageMap, setCityImageMap] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadCityImages = async () => {
-      // First, try to get cached images
-      const cachedImages = getCachedCityImages();
-      const cityNames = mockCityData.map((city) => city.name);
-
-      // Check if we have all cities cached
-      const allCached = cityNames.every((city) => cachedImages[city]);
-
-      if (allCached) {
-        setCityImageMap(cachedImages);
-        setIsLoading(false);
-        return;
-      }
-
-      // If Unsplash is not configured, use default images
-      if (!isUnsplashConfigured()) {
-        console.warn("Unsplash API key not configured. Using default images.");
-        const defaultImages = mockCityData.reduce(
-          (acc, city) => {
-            acc[city.name] = city.imageUrl;
-            return acc;
-          },
-          {} as Record<string, string>
-        );
-
-        setCityImageMap(defaultImages);
-        setIsLoading(false);
-        return;
-      }
-
-      // If not all cached, fetch missing ones
+    const loadCitiesAndImages = async () => {
       try {
-        const newImages = await fetchCityImages(cityNames);
+        setIsLoading(true);
+        setError(null);
 
-        // Merge with cached images
-        const mergedImages = { ...cachedImages, ...newImages };
+        // Fetch cities from API
+        const citiesData = await getCities();
+        setCities(citiesData);
 
-        setCityImageMap(mergedImages);
-        setCachedCityImages(mergedImages);
+        console.log(citiesData);
+
+        if (citiesData.length === 0) {
+          setIsLoading(false);
+          return;
+        }
+
+        // Get city names for image fetching
+        const cityNames = citiesData.map((city) => city);
+
+        // First, try to get cached images
+        const cachedImages = getCachedCityImages();
+
+        // Check if we have all cities cached
+        const allCached = cityNames.every((city) => cachedImages[city]);
+
+        if (allCached) {
+          setCityImageMap(cachedImages);
+          setIsLoading(false);
+          return;
+        }
+
+        // If Unsplash is not configured, use default images from API
+        if (!isUnsplashConfigured()) {
+          console.warn(
+            "Unsplash API key not configured. Using default images from API."
+          );
+          const defaultImages = citiesData.reduce(
+            (acc, city) => {
+              acc[city] = city;
+              return acc;
+            },
+            {} as Record<string, string>
+          );
+
+          setCityImageMap(defaultImages);
+          setIsLoading(false);
+          return;
+        }
+
+        // If not all cached, fetch missing ones from Unsplash
+        try {
+          const newImages = await fetchCityImages(cityNames);
+
+          // Merge with cached images
+          const mergedImages = { ...cachedImages, ...newImages };
+
+          setCityImageMap(mergedImages);
+          setCachedCityImages(mergedImages);
+        } catch (error) {
+          console.error("Failed to fetch city images:", error);
+          // Use cached images as fallback, or default images if no cache
+          const fallbackImages =
+            Object.keys(cachedImages).length > 0
+              ? cachedImages
+              : citiesData.reduce(
+                  (acc, city) => {
+                    acc[city] = city;
+                    return acc;
+                  },
+                  {} as Record<string, string>
+                );
+
+          setCityImageMap(fallbackImages);
+        }
       } catch (error) {
-        console.error("Failed to fetch city images:", error);
-        // Use cached images as fallback, or default images if no cache
-        const fallbackImages =
-          Object.keys(cachedImages).length > 0
-            ? cachedImages
-            : mockCityData.reduce(
-                (acc, city) => {
-                  acc[city.name] = city.imageUrl;
-                  return acc;
-                },
-                {} as Record<string, string>
-              );
-
-        setCityImageMap(fallbackImages);
+        console.error("Failed to load cities:", error);
+        setError("Failed to load cities");
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadCityImages();
+    loadCitiesAndImages();
   }, []);
+
+  if (error) {
+    return (
+      <div className="w-full text-center py-8">
+        <p className="text-white/60">
+          Failed to load cities. Please try again later.
+        </p>
+      </div>
+    );
+  }
+
+  if (cities.length === 0 && !isLoading) {
+    return (
+      <div className="w-full text-center py-8">
+        <p className="text-white/60">No cities found.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -83,14 +126,14 @@ export const CityCardCarousel = () => {
         className="flex gap-6 overflow-x-auto overflow-y-visible pb-6 -mx-4 px-24 -mt-10 pt-5"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {mockCityData.map((city) => (
-          <div key={city.id} className="flex-shrink-0">
+        {cities.map((city) => (
+          <div key={city} className="flex-shrink-0">
             <CityCard
-              key={city.name + city.id}
-              id={city.id}
-              name={city.name}
-              imageUrl={cityImageMap[city.name] || city.imageUrl}
-              placesSaved={city.placesSaved}
+              key={city}
+              id={city}
+              name={city}
+              imageUrl={cityImageMap[city]}
+              placesSaved={0}
               isLoading={isLoading}
             />
           </div>
