@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
-import { getCities, getPois, POI as APIPOI } from "@/lib/api";
+import { getCities, getPoisWithPricing, POI as APIPOI } from "@/lib/api";
 import { POICard } from "@/src/components/POICard";
 import { FilterChips } from "@/src/components/FilterChips";
 import { AddPOISheet } from "@/src/components/AddPOISheet";
@@ -23,6 +23,7 @@ interface POI {
   price?: number;
   discountPercent?: number;
   tgid?: string;
+  pricing?: any; // Add pricing information
 }
 
 export default function CityPage() {
@@ -60,6 +61,7 @@ export default function CityPage() {
         photo_reference: "",
       },
       tgid: apiPOI.tgid,
+      pricing: apiPOI.pricing, // Include pricing information
     };
   };
 
@@ -182,8 +184,8 @@ export default function CityPage() {
         // Set city data
         setCityData({ id: cityId, name: currentCity });
 
-        // Get POIs for the user
-        const poisResponse = await getPois();
+        // Get POIs with pricing for the user
+        const poisResponse = await getPoisWithPricing();
 
         // Filter POIs for the current city and transform to component format
         const cityPois = poisResponse.pois
