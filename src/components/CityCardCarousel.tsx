@@ -8,11 +8,14 @@ import {
   setCachedCityImages,
   isUnsplashConfigured,
 } from "@/lib/unsplash";
-import { getCities, City } from "@/lib/api";
+import { getCities, getPois } from "@/lib/api";
 
 export const CityCardCarousel = () => {
   const [cities, setCities] = useState<string[]>([]);
   const [cityImageMap, setCityImageMap] = useState<Record<string, string>>({});
+  const [cityPOICounts, setCityPOICounts] = useState<Record<string, number>>(
+    {}
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +32,33 @@ export const CityCardCarousel = () => {
         if (citiesData.length === 0) {
           setIsLoading(false);
           return;
+        }
+
+        // Fetch POIs to get counts for each city
+        try {
+          const poisResponse = await getPois();
+          const poiCounts: Record<string, number> = {};
+
+          // Count POIs for each city
+          citiesData.forEach((city) => {
+            const cityPOIs = poisResponse.pois.filter(
+              (poi) => poi.city.toLowerCase() === city.toLowerCase()
+            );
+            poiCounts[city] = cityPOIs.length;
+          });
+
+          setCityPOICounts(poiCounts);
+        } catch (poiError) {
+          console.error("Failed to fetch POIs for city counts:", poiError);
+          // Set default counts of 0 if POI fetch fails
+          const defaultCounts = citiesData.reduce(
+            (acc, city) => {
+              acc[city] = 0;
+              return acc;
+            },
+            {} as Record<string, number>
+          );
+          setCityPOICounts(defaultCounts);
         }
 
         // Get city names for image fetching
@@ -131,7 +161,7 @@ export const CityCardCarousel = () => {
               id={city}
               name={city}
               imageUrl={cityImageMap[city]}
-              placesSaved={0}
+              placesSaved={cityPOICounts[city] || 0}
               isLoading={isLoading}
             />
           </div>

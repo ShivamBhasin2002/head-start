@@ -66,7 +66,7 @@ export function CityCard({
           {name}
         </h2>
         <div className="bg-black/25 p-[10px] rounded-xl absolute bottom-[18px] left-[18px] whitespace-nowrap font-[halyard-text] font-medium text-[15px] leading-[20px] tracking-[0]">
-          {Math.floor(Math.random() * 50) + 1} places saved
+          {placesSaved} places saved
         </div>
       </div>
       {/* Hidden image element to detect loading errors */}
