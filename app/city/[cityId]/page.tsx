@@ -35,6 +35,7 @@ export default function CityPage() {
   const [isSheetOpen, setSheetOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const [windowHeight, setWindowHeight] = useState(0);
   const [y, setYState] = useState(0);
@@ -164,6 +165,7 @@ export default function CityPage() {
       try {
         setIsLoading(true);
         setError(null);
+        setDataLoaded(false);
 
         // Get cities to find the current city
         const cities = await getCities();
@@ -173,7 +175,7 @@ export default function CityPage() {
 
         if (!currentCity) {
           setError("City not found");
-          setIsLoading(false);
+          setDataLoaded(true);
           return;
         }
 
@@ -189,15 +191,25 @@ export default function CityPage() {
           .map(transformAPIPOIToPOI);
 
         setPois(cityPois);
+        setDataLoaded(true);
       } catch (error) {
         console.error("Failed to load city data:", error);
         setError("Failed to load city data");
-      } finally {
-        setIsLoading(false);
+        setDataLoaded(true);
       }
     };
 
-    loadCityData();
+    const startTime = Date.now();
+    const minLoadingTime = 5000; // 5 seconds
+
+    loadCityData().then(() => {
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, remainingTime);
+    });
   }, [cityId]);
 
   const filteredPOIs = useMemo(() => {
@@ -205,7 +217,7 @@ export default function CityPage() {
     return pois.filter((poi) => selectedCategories.includes(poi.category));
   }, [pois, selectedCategories]);
 
-  if (error) {
+  if (error && !isLoading) {
     return <div className="text-white text-center py-12">{error}</div>;
   }
 

@@ -8,10 +8,10 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SearchSheet } from "@/src/components/SearchSheet";
 import { containerVariants, itemVariants } from "@/lib/mockCityData";
-import { parseCookies } from "nookies";
 import { CityCardCarousel } from "@/src/components/CityCardCarousel";
 import { getCities } from "@/lib/api";
 import { API_URL } from "@/src/constants";
+import Cookies from "js-cookie";
 
 const tripInspirations = {
   Worldwide: [
@@ -69,9 +69,9 @@ export default function HomePage() {
   const [isNewUser, setIsNewUser] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const cookies = parseCookies();
-    const cookieUsername = cookies.username;
-    const cookieWaId = cookies.number;
+    const cookieUsername = Cookies.get("username");
+    const cookieWaId = Cookies.get("number");
+    console.log(cookieUsername, cookieWaId);
     if (cookieUsername) {
       setUsername(cookieUsername);
     }
@@ -369,7 +369,7 @@ export default function HomePage() {
         onSubmit={(e) => {
           e.preventDefault();
           setInputState("loading");
-          fetch(`${API_URL}/api/v1/process-message`, {
+          fetch(`${API_URL}/api/v1/process-message/`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

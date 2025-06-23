@@ -33,15 +33,9 @@ export async function POST(request: NextRequest) {
     // Set cookies for authentication
     const responseWithCookies = NextResponse.json(data);
     responseWithCookies.cookies.set("username", name, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
     responseWithCookies.cookies.set("number", phoneNo, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
 
