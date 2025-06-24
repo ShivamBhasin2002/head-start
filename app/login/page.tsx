@@ -20,7 +20,7 @@ export default function LoginPage() {
           height="442"
           viewBox="0 0 375 442"
           fill="none"
-          className="fixed top-[-29px]"
+          className="fixed top-[-29px] z-0"
           animate={{ x: ["-50%", "50%"] }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
         >
@@ -63,7 +63,7 @@ export default function LoginPage() {
           height="443"
           viewBox="0 0 375 443"
           fill="none"
-          className="fixed top-[43px]"
+          className="fixed top-[43px] z-0 "
           animate={{ x: ["50%", "-50%"] }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
         >

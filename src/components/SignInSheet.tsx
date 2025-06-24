@@ -274,7 +274,7 @@ export function SignInSheet({ open, onOpenChange }: SignInSheetProps) {
                         />
                         <input
                           type="tel"
-                          placeholder="Your phone number"
+                          placeholder="Enter your country code and phone number without +"
                           className="w-full px-3 py-[18px] bg-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none font-[halyard-text] font-light text-[15px] leading-[20px] tracking-[0%]"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}

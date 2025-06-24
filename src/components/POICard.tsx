@@ -112,7 +112,7 @@ export function POICard({
           <div className="flex-1 flex flex-col justify-between">
             <h3
               className={`font-[halyard-text] font-semibold text-[18px] leading-[24px] tracking-[0] ${
-                isLight ? "text-[#22222290]" : "text-[#ffffff90]"
+                isLight ? "text-[#222222]" : "text-[#ffffff]"
               }`}
             >
               {poi.name}
