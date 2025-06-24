@@ -8,6 +8,7 @@ import { FilterChips } from "@/src/components/FilterChips";
 import { AddPOISheet } from "@/src/components/AddPOISheet";
 import { Plus } from "lucide-react";
 import { Map } from "@/src/components/Map";
+import { getCityCoordinates } from "@/lib/cityCoordinates";
 
 interface POI {
   id: string;
@@ -46,6 +47,9 @@ export default function CityPage() {
   const dragStartRef = useRef({ y: 0, sheetY: 0 });
 
   const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
+
+  // Get city center coordinates
+  const cityCenter = getCityCoordinates(cityId);
 
   // Transform API POI to component POI format
   const transformAPIPOIToPOI = (apiPOI: APIPOI): POI => {
@@ -274,6 +278,7 @@ export default function CityPage() {
             setSelectedPOI(poi);
             setY(snapPoints[2]);
           }}
+          cityCenter={cityCenter}
         />
       </div>
       <div

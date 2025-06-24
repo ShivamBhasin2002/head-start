@@ -23,6 +23,7 @@ interface MapProps {
   pois: POI[];
   selectedPOI: POI | null;
   onMarkerClick: (poi: POI) => void;
+  cityCenter: [number, number];
 }
 
 const categoryStyles: {
@@ -79,16 +80,54 @@ const createCustomIcon = (poi: POI, isSelected: boolean) => {
   });
 };
 
-function MapBounds({ pois }: { pois: POI[] }) {
+function MapBounds({
+  pois,
+  cityCenter,
+}: {
+  pois: POI[];
+  cityCenter: [number, number];
+}) {
   const map = useMap();
+  console.log(pois);
   useEffect(() => {
-    if (pois.length > 0) {
-      const bounds = new L.LatLngBounds(
-        pois.map((p) => [p.coordinates.lat, p.coordinates.lng])
-      );
-      map.fitBounds(bounds, { padding: [50, 50] });
+    // Validate city center coordinates
+    if (
+      !cityCenter ||
+      cityCenter.length !== 2 ||
+      typeof cityCenter[0] !== "number" ||
+      typeof cityCenter[1] !== "number" ||
+      isNaN(cityCenter[0]) ||
+      isNaN(cityCenter[1])
+    ) {
+      console.warn("Invalid city center coordinates:", cityCenter);
+      return;
     }
-  }, [pois, map]);
+
+    if (pois.length > 0) {
+      // Filter out POIs with invalid coordinates
+      const validPois = pois.filter(
+        (poi) =>
+          poi.coordinates &&
+          typeof poi.coordinates.lat === "number" &&
+          typeof poi.coordinates.lng === "number" &&
+          !isNaN(poi.coordinates.lat) &&
+          !isNaN(poi.coordinates.lng)
+      );
+
+      if (validPois.length > 0) {
+        const bounds = new L.LatLngBounds(
+          validPois.map((p) => [p.coordinates.lat, p.coordinates.lng])
+        );
+        map.fitBounds(bounds, { padding: [50, 50] });
+      } else {
+        // If no valid POIs, center on the city
+        map.setView(cityCenter, 13);
+      }
+    } else {
+      // If no POIs, center on the city
+      map.setView(cityCenter, 13);
+    }
+  }, [pois, map, cityCenter]);
   return null;
 }
 
@@ -117,10 +156,16 @@ function ZoomHandler() {
   return null;
 }
 
-export function Map({ pois, selectedPOI, onMarkerClick }: MapProps) {
+export function Map({
+  pois,
+  selectedPOI,
+  onMarkerClick,
+  cityCenter,
+}: MapProps) {
   if (typeof window === "undefined") {
     return null;
   }
+
   return (
     <>
       <style>
@@ -179,7 +224,7 @@ export function Map({ pois, selectedPOI, onMarkerClick }: MapProps) {
         `}
       </style>
       <MapContainer
-        center={[35.6895, 139.6917]}
+        center={cityCenter}
         zoom={13}
         style={{ height: "100%", width: "100%", zIndex: 0 }}
         scrollWheelZoom={false}
@@ -188,17 +233,26 @@ export function Map({ pois, selectedPOI, onMarkerClick }: MapProps) {
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
-        {pois.map((poi) => (
-          <Marker
-            key={poi.id}
-            position={[poi.coordinates.lat, poi.coordinates.lng]}
-            icon={createCustomIcon(poi, selectedPOI?.id === poi.id)}
-            eventHandlers={{
-              click: () => onMarkerClick(poi),
-            }}
-          />
-        ))}
-        <MapBounds pois={pois} />
+        {pois
+          .filter(
+            (poi) =>
+              poi.coordinates &&
+              typeof poi.coordinates.lat === "number" &&
+              typeof poi.coordinates.lng === "number" &&
+              !isNaN(poi.coordinates.lat) &&
+              !isNaN(poi.coordinates.lng)
+          )
+          .map((poi) => (
+            <Marker
+              key={poi.id}
+              position={[poi.coordinates.lat, poi.coordinates.lng]}
+              icon={createCustomIcon(poi, selectedPOI?.id === poi.id)}
+              eventHandlers={{
+                click: () => onMarkerClick(poi),
+              }}
+            />
+          ))}
+        <MapBounds pois={pois} cityCenter={cityCenter} />
         <ZoomHandler />
       </MapContainer>
     </>
