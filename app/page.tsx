@@ -71,7 +71,6 @@ export default function HomePage() {
   useEffect(() => {
     const cookieUsername = Cookies.get("username");
     const cookieWaId = Cookies.get("number");
-    console.log(cookieUsername, cookieWaId);
     if (cookieUsername) {
       setUsername(cookieUsername);
     }

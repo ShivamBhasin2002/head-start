@@ -382,6 +382,7 @@ export function POICard({
         onOpenChange={setRemoveSheetOpen}
         poi={poi}
         onConfirmRemove={onRemove}
+        imgUrl={imageUrl}
       />
     </>
   );

@@ -21,6 +21,7 @@ interface RemovePOISheetProps {
   onOpenChange: (open: boolean) => void;
   poi: POI | null;
   onConfirmRemove: () => void;
+  imgUrl: string;
 }
 
 export function RemovePOISheet({
@@ -28,6 +29,7 @@ export function RemovePOISheet({
   onOpenChange,
   poi,
   onConfirmRemove,
+  imgUrl,
 }: RemovePOISheetProps) {
   const isRemove = useRef(false);
   if (!poi) return null;
@@ -57,7 +59,7 @@ export function RemovePOISheet({
           </button>
           <div className="flex gap-3 items-center mb-9">
             <img
-              src={poi.imageUrl.url}
+              src={imgUrl}
               alt={poi.name}
               width={82}
               height={72}

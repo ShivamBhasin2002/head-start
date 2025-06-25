@@ -88,7 +88,6 @@ function MapBounds({
   cityCenter: [number, number];
 }) {
   const map = useMap();
-  console.log(pois);
   useEffect(() => {
     // Validate city center coordinates
     if (
