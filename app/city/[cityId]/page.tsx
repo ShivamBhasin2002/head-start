@@ -10,10 +10,13 @@ import { AddPOISheet } from "@/src/components/AddPOISheet";
 import { Plus } from "lucide-react";
 import { getCityCoordinates } from "@/lib/cityCoordinates";
 
-const Map = dynamic(() => import("@/src/components/Map").then(mod => mod.Map), {
-  ssr: false,
-  loading: () => <div className="h-full w-full bg-gray-100" />
-});
+const Map = dynamic(
+  () => import("@/src/components/Map").then((mod) => mod.Map),
+  {
+    ssr: false,
+    loading: () => <div className="h-full w-full bg-gray-100" />,
+  }
+);
 
 interface POI {
   id: string;
@@ -321,7 +324,7 @@ export default function CityPage() {
                   rx="18"
                   fill="url(#paint0_linear_234_3298)"
                   fill-opacity="0.3"
-                  shape-rendering="crispEdges"
+                  shapeRendering="crispEdges"
                 />
                 <rect
                   x="0.5"
@@ -331,7 +334,7 @@ export default function CityPage() {
                   rx="17.5"
                   stroke="white"
                   stroke-opacity="0.1"
-                  shape-rendering="crispEdges"
+                  shapeRendering="crispEdges"
                 />
                 <path
                   fill-rule="evenodd"
