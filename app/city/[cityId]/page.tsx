@@ -2,13 +2,18 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
+import dynamic from "next/dynamic";
 import { getCities, getPoisWithPricing, POI as APIPOI } from "@/lib/api";
 import { POICard } from "@/src/components/POICard";
 import { FilterChips } from "@/src/components/FilterChips";
 import { AddPOISheet } from "@/src/components/AddPOISheet";
 import { Plus } from "lucide-react";
-import { Map } from "@/src/components/Map";
 import { getCityCoordinates } from "@/lib/cityCoordinates";
+
+const Map = dynamic(() => import("@/src/components/Map").then(mod => mod.Map), {
+  ssr: false,
+  loading: () => <div className="h-full w-full bg-gray-100" />
+});
 
 interface POI {
   id: string;
